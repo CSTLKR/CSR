@@ -1,108 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoStalker Roadmap</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: url('https://i.ibb.co/bgrxfMry/image.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoStalker Roadmap</title>
+  <meta name="description" content="CryptoStalker (CSR) Roadmap — current status, growth phases and long-term vision for the Solana-based CSR token.">
 
-        .content {
-            background: rgba(0, 0, 0, 0.75);
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 750px;
-            text-align: center;
-        }
+  <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/qLSX08wK/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/Bm3npct/favicon-32x32.png">
 
-        .btn-back {
-            padding: 12px 25px;
-            font-size: 1.2em;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid white;
-            border-radius: 10px;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-        .btn-back:hover {
-            background: white;
-            color: black;
-        }
+  <style>
+    :root {
+      --bg: #070a08;
+      --panel: rgba(9, 20, 15, 0.78);
+      --fg: #dff5e6;
+      --fg-dim: #8fada0;
+      --accent: #2ee6a6;
+      --accent-soft: rgba(46, 230, 166, 0.35);
+      --alert: #ff5470;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
 
-        h1 {
-            margin-bottom: 20px;
-        }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
 
-        h2 {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid white;
-            padding-bottom: 5px;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://i.ibb.co/bgrxfMry/image.jpg') center center / cover no-repeat fixed;
+      min-height: 100vh;
+      font-family: var(--sans);
+      color: var(--fg);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 110px 16px 60px;
+      overflow-x: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        ul {
-            padding-left: 20px;
-            text-align: left;
-        }
-    </style>
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center 35%, rgba(0,0,0,0.35) 0%, rgba(3,8,6,0.86) 65%, rgba(2,5,4,0.95) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 2px, transparent 4px);
+      mix-blend-mode: overlay;
+      animation: scan-drift 9s linear infinite;
+    }
+    @keyframes scan-drift { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+
+    .hud-corner {
+      position: fixed;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--accent-soft);
+      z-index: 6;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .hud-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+    .hud-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+    .hud-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+    .hud-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
+
+    .radar {
+      position: fixed;
+      top: 26px;
+      left: 26px;
+      width: 12px;
+      height: 12px;
+      z-index: 6;
+      pointer-events: none;
+    }
+    .radar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px 2px var(--accent-soft);
+    }
+    .radar::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-soft);
+      animation: radar-ping 2.4s ease-out infinite;
+    }
+    @keyframes radar-ping { 0% { transform: scale(0.3); opacity: 0.9; } 100% { transform: scale(2.6); opacity: 0; } }
+
+    .top-button {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 7;
+      padding: 10px 22px;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.05em;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: 0.25s;
+      text-shadow: 0 0 12px var(--accent-soft);
+    }
+    .top-button:hover {
+      background: var(--accent);
+      color: #05130d;
+      border-color: var(--accent);
+      text-shadow: none;
+      transform: translateX(-50%) translateY(-1px);
+      box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 720px;
+      background: var(--panel);
+      backdrop-filter: blur(3px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 6px;
+      padding: 8px 34px 34px;
+      text-align: left;
+      animation: content-in 0.6s ease-out both;
+    }
+    @keyframes content-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid var(--accent-soft);
+      padding: 14px 0;
+      font-family: var(--mono);
+      font-size: 0.72em;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+    }
+    .doc-header span.status { color: var(--accent); }
+
+    h1 {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 1.6em;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      text-shadow: 0 0 16px var(--accent-soft);
+      margin: 22px 0 28px;
+      text-align: left;
+    }
+
+    /* vertical timeline */
+    .timeline {
+      position: relative;
+      padding-left: 26px;
+      border-left: 2px solid var(--accent-soft);
+    }
+
+    .stage {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .stage:last-child { margin-bottom: 6px; }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      left: -33px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--fg-dim);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+    .stage.active::before {
+      background: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft), 0 0 12px 3px var(--accent-soft);
+      animation: pulse-marker 2s ease-in-out infinite;
+    }
+    @keyframes pulse-marker {
+      0%, 100% { box-shadow: 0 0 0 2px var(--accent-soft), 0 0 10px 2px var(--accent-soft); }
+      50%      { box-shadow: 0 0 0 2px var(--accent-soft), 0 0 18px 6px var(--accent-soft); }
+    }
+
+    .stage h2 {
+      font-family: var(--mono);
+      font-size: 1em;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin: 0 0 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stage.active h2::after {
+      content: "ACTIVE";
+      font-size: 0.6em;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    ul { margin: 6px 0 0; padding-left: 0; list-style: none; }
+    li {
+      font-family: var(--sans);
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: var(--fg);
+      opacity: 0.92;
+      padding: 5px 0 5px 20px;
+      position: relative;
+    }
+    li::before {
+      content: "›";
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    li b { color: var(--accent); font-family: var(--mono); font-weight: 600; }
+
+    .btn-back {
+      margin-top: 24px;
+      padding: 12px 22px;
+      font-family: var(--mono);
+      font-size: 1em;
+      letter-spacing: 0.03em;
+      color: var(--fg);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      transition: 0.25s;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-back::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(46,230,166,0.35), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn-back:hover::after { left: 130%; }
+    .btn-back:hover {
+      background: rgba(46, 230, 166, 0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 18px rgba(46,230,166,0.18);
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 90px 10px 40px; }
+      .content { padding: 6px 20px 26px; }
+      h1 { font-size: 1.3em; }
+      .hud-corner { width: 22px; height: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .crt-overlay, .radar::after, body, .content, .btn-back::after, .stage.active::before {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
-<body>
-    <div class="content">
-        <h1>CryptoStalker Roadmap (CSR)</h1>
 
+<body>
+  <div class="crt-overlay"></div>
+  <div class="hud-corner tl"></div>
+  <div class="hud-corner tr"></div>
+  <div class="hud-corner bl"></div>
+  <div class="hud-corner br"></div>
+  <div class="radar"></div>
+
+  <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
+
+  <div class="content">
+    <div class="doc-header">
+      <span>DOC: ROADMAP.CSR</span>
+      <span class="status">STATUS: TRACKING PROGRESS</span>
+    </div>
+
+    <h1>CryptoStalker Roadmap (CSR)</h1>
+
+    <div class="timeline">
+      <div class="stage active">
         <h2>Current Status</h2>
         <ul>
-            <li>CSR token launched on Pump.fun</li>
-            <li>Liquidity provided through Pump.fun mechanism</li>
-            <li>CryptoStalker Premium Signals Telegram is live</li>
-            <li>Holders of <b>5,000,000+ CSR</b> get access to VIP futures trading signals and analytics</li>
+          <li>CSR token launched on Pump.fun</li>
+          <li>Liquidity provided through Pump.fun mechanism</li>
+          <li>CryptoStalker Premium Signals Telegram is live</li>
+          <li>Holders of <b>5,000,000+ CSR</b> get access to VIP futures trading signals and analytics</li>
         </ul>
+      </div>
 
-        <h2>2026 — Growth & Community</h2>
+      <div class="stage">
+        <h2>2026 — Growth &amp; Community</h2>
         <ul>
-            <li>Community growth and marketing expansion</li>
-            <li>Contests, giveaways, and engagement activities</li>
-            <li>Improvement of trading signals and analytics</li>
+          <li>Community growth and marketing expansion</li>
+          <li>Contests, giveaways, and engagement activities</li>
+          <li>Improvement of trading signals and analytics</li>
         </ul>
+      </div>
 
+      <div class="stage">
         <h2>2026–2027 — Ecosystem Expansion</h2>
         <ul>
-            <li>Expansion of CSR token utility</li>
-            <li>Partnerships with crypto communities and influencers</li>
-            <li>Strengthening CryptoStalker brand presence</li>
+          <li>Expansion of CSR token utility</li>
+          <li>Partnerships with crypto communities and influencers</li>
+          <li>Strengthening CryptoStalker brand presence</li>
         </ul>
+      </div>
 
+      <div class="stage">
         <h2>Future</h2>
         <ul>
-            <li>Liquidity expansion</li>
-            <li>Potential DEX listing opportunities</li>
-            <li>Long-term ecosystem growth</li>
+          <li>Liquidity expansion</li>
+          <li>Potential DEX listing opportunities</li>
+          <li>Long-term ecosystem growth</li>
         </ul>
+      </div>
 
+      <div class="stage">
         <h2>Vision</h2>
         <ul>
-            <li>CSR is a community-driven token with real utility</li>
-            <li>Access to trading signals for active holders</li>
-            <li>Building a long-term crypto ecosystem around CryptoStalker</li>
+          <li>CSR is a community-driven token with real utility</li>
+          <li>Access to trading signals for active holders</li>
+          <li>Building a long-term crypto ecosystem around CryptoStalker</li>
         </ul>
-
-        <a href="index.html" class="btn-back">Back</a>
+      </div>
     </div>
+
+    <a href="index.html" class="btn-back">‹ Back</a>
+  </div>
 </body>
 </html>
