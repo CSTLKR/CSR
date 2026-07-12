@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,8 +59,7 @@
     body {
       margin: 0;
       padding: 0;
-      background: url('https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png')
-                  center center / cover no-repeat fixed;
+      background: transparent;
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -72,6 +70,20 @@
       color: var(--fg);
       position: relative;
       overflow-x: hidden;
+    }
+
+    /* the photo lives on its own fixed layer instead of body's background —
+       background-attachment:fixed is unreliable on mobile (address-bar resize
+       leaves black bars), a dedicated fixed element is not. */
+    .bg-photo {
+      position: fixed;
+      inset: -16px;
+      z-index: -1;
+      background: url('https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png')
+                  no-repeat;
+      background-size: cover;
+      background-position: calc(50% + var(--px, 0px)) calc(50% + var(--py, 0px));
+      pointer-events: none;
     }
 
     /* darken + tint the photo so the HUD reads on top of it */
@@ -485,6 +497,7 @@
 </head>
 
 <body>
+  <div class="bg-photo"></div>
   <canvas id="signal-net"></canvas>
   <div class="crt-overlay"></div>
   <div class="hud-corner tl"></div>
@@ -595,6 +608,56 @@
       }
 
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
+    })();
+
+    // ---- background parallax (mouse on desktop, tilt on mobile) ----
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const MAX_OFFSET = 8; // px of drift in any direction
+      let targetX = 0, targetY = 0, curX = 0, curY = 0;
+      const root = document.documentElement;
+
+      function apply() {
+        curX += (targetX - curX) * 0.06;
+        curY += (targetY - curY) * 0.06;
+        root.style.setProperty('--px', curX.toFixed(2) + 'px');
+        root.style.setProperty('--py', curY.toFixed(2) + 'px');
+        requestAnimationFrame(apply);
+      }
+      requestAnimationFrame(apply);
+
+      // desktop: mouse position
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;   // -1..1
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;  // -1..1
+        targetX = -nx * MAX_OFFSET;
+        targetY = -ny * MAX_OFFSET;
+      });
+
+      // mobile: device tilt
+      function handleOrientation(e) {
+        if (e.beta === null || e.gamma === null) return;
+        const nx = Math.max(-1, Math.min(1, e.gamma / 30));  // left/right tilt
+        const ny = Math.max(-1, Math.min(1, (e.beta - 45) / 30)); // fwd/back tilt
+        targetX = -nx * MAX_OFFSET;
+        targetY = -ny * MAX_OFFSET;
+      }
+
+      function enableGyro() {
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(state => {
+              if (state === 'granted') window.addEventListener('deviceorientation', handleOrientation);
+            })
+            .catch(() => {});
+        } else {
+          window.addEventListener('deviceorientation', handleOrientation);
+        }
+      }
+      // iOS requires a user gesture to grant motion permission
+      document.body.addEventListener('touchstart', enableGyro, { once: true });
     })();
   </script>
 </body>
