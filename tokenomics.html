@@ -1,14 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CryptoStalker Whitepaper</title>
-  <meta name="description" content="CryptoStalker (CSR) Whitepaper — blockchain details, tokenomics and roadmap for the Solana-based CSR token.">
+  <title>Tokenomics | CryptoStalker (CSR)</title>
+  <meta name="description" content="CSR tokenomics: 1,000,000,000 fixed supply, 100% fair launch liquidity on Pump.fun, no team allocation, no pre-mine.">
 
-  <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/qLSX08wK/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/Bm3npct/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,16 +208,6 @@
       letter-spacing: 0.1em;
     }
 
-    h3 {
-      font-family: var(--mono);
-      font-size: 0.92em;
-      color: var(--fg);
-      letter-spacing: 0.03em;
-      margin: 20px 0 8px;
-      padding-left: 12px;
-      border-left: 2px solid var(--accent);
-    }
-
     p {
       font-family: var(--sans);
       font-size: 0.98em;
@@ -251,15 +242,54 @@
       letter-spacing: 0.02em;
     }
 
-    .roadmap-grid {
-      display: grid;
-      gap: 12px;
+    /* allocation bar */
+    .alloc-bar {
+      width: 100%;
+      height: 10px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--accent-soft);
+      margin: 6px 0 6px;
     }
-    .quarter {
+    .alloc-bar-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent), rgba(46,230,166,0.6));
+    }
+    .alloc-caption {
+      font-family: var(--mono);
+      font-size: 0.72em;
+      letter-spacing: 0.08em;
+      color: var(--fg-dim);
+      margin-bottom: 24px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin: 6px 0 10px;
+    }
+    .stat-box {
       background: rgba(46, 230, 166, 0.06);
       border: 1px solid var(--accent-soft);
       border-radius: 4px;
-      padding: 4px 16px 8px;
+      padding: 10px 14px;
+    }
+    .stat-box .label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.68em;
+      letter-spacing: 0.08em;
+      color: var(--fg-dim);
+      margin-bottom: 4px;
+    }
+    .stat-box .value {
+      font-family: var(--mono);
+      font-size: 1em;
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .btn-back {
@@ -302,6 +332,7 @@
       .content { padding: 6px 20px 26px; }
       h1 { font-size: 1.3em; }
       .hud-corner { width: 22px; height: 22px; }
+      .stat-grid { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -325,69 +356,48 @@
 
   <div class="content">
     <div class="doc-header">
-      <span>DOC: WHITEPAPER.CSR</span>
+      <span>DOC: TOKENOMICS.CSR</span>
       <span class="status">STATUS: ACTIVE</span>
     </div>
 
-    <h1>CryptoStalker Token (CSR) Whitepaper</h1>
-    <div class="subtitle">// SOLANA NETWORK · FAIR LAUNCH · COMMUNITY DRIVEN</div>
+    <h1>CryptoStalker Token (CSR) Tokenomics</h1>
+    <div class="subtitle">// FIXED SUPPLY · 100% FAIR LAUNCH · NO TEAM ALLOCATION</div>
 
-    <h2>Introduction <span class="tag">01</span></h2>
-    <p>CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development.</p>
-
-    <h2>Blockchain and Token Details <span class="tag">02</span></h2>
-    <ul>
-      <li><strong>Blockchain:</strong> Solana</li>
-      <li><strong>Ticker:</strong> CSR</li>
-      <li><strong>Total Supply:</strong> 1,000,000,000 CSR</li>
-      <li><strong>Launch Platform:</strong> Pump.fun</li>
-      <li><strong>Future Listing:</strong> Raydium</li>
-      <li><strong>Smart Contract:</strong> Fully auditable and immutable</li>
-    </ul>
-
-    <h2>Tokenomics <span class="tag">03</span></h2>
-    <ul>
-      <li><strong>Liquidity Pool (Pump.fun):</strong> 100% (1,000,000,000 CSR)</li>
-      <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
-      <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
-      <li><strong>Fixed Supply:</strong> No additional minting</li>
-      <li><strong>Future Liquidity Transfer:</strong> Transition to Raydium for better accessibility and liquidity</li>
-    </ul>
-
-    <h2>Roadmap <span class="tag">04</span></h2>
-    <div class="roadmap-grid">
-      <div class="quarter">
-        <h3>Q4 2025 — Launch and Basic Stages</h3>
-        <ul>
-          <li>Token already launched on Pump.fun</li>
-          <li>Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool</li>
-          <li>Marketing campaign and community building</li>
-        </ul>
+    <h2>Key Figures <span class="tag">01</span></h2>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <span class="label">TOTAL SUPPLY</span>
+        <span class="value">1,000,000,000 CSR</span>
       </div>
-      <div class="quarter">
-        <h3>Q1 2026 — Expansion and Exchange Listing</h3>
-        <ul>
-          <li>Listing on Raydium</li>
-          <li>Community growth: contests, giveaways, and events</li>
-        </ul>
+      <div class="stat-box">
+        <span class="label">TEAM / PRE-MINE</span>
+        <span class="value">0%</span>
       </div>
-      <div class="quarter">
-        <h3>Q2 2026 — Partnerships and Exchange Listing</h3>
-        <ul>
-          <li>Establishing strategic partnerships</li>
-          <li>Listing on major DEXs</li>
-        </ul>
+      <div class="stat-box">
+        <span class="label">LIQUIDITY POOL</span>
+        <span class="value">100%</span>
       </div>
-      <div class="quarter">
-        <h3>Q3 2026 — Sustainable Growth</h3>
-        <ul>
-          <li>Community-driven improvements</li>
-        </ul>
+      <div class="stat-box">
+        <span class="label">MINTING</span>
+        <span class="value">DISABLED</span>
       </div>
     </div>
 
-    <h2>Conclusion <span class="tag">05</span></h2>
-    <p>CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy.</p>
+    <h2>Supply Allocation <span class="tag">02</span></h2>
+    <div class="alloc-bar"><div class="alloc-bar-fill"></div></div>
+    <div class="alloc-caption">100% — LIQUIDITY POOL (PUMP.FUN)</div>
+    <p>The entire supply of 1,000,000,000 CSR was added directly to the Pump.fun liquidity pool at launch. There is no team wallet, no pre-mine, and no private or presale allocation — every token in circulation entered the market the same way.</p>
+
+    <h2>Distribution Principles <span class="tag">03</span></h2>
+    <ul>
+      <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
+      <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
+      <li><strong>Fixed Supply:</strong> No additional minting, ever</li>
+      <li><strong>Future Liquidity Transfer:</strong> Planned transition to Raydium for wider accessibility and deeper liquidity</li>
+    </ul>
+
+    <h2>Why It Matters <span class="tag">04</span></h2>
+    <p>Because 100% of supply started in the open liquidity pool, no single wallet holds an outsized allocation that could be dumped on holders. Price discovery happens purely through market activity, which keeps the token's distribution aligned with the community that trades and holds it.</p>
 
     <a href="index.html" class="btn-back">‹ Back</a>
   </div>
