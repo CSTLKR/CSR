@@ -4,9 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Whitepaper | CryptoStalker (CSR)</title>
+  <title data-en="Whitepaper | CryptoStalker (CSR)" data-ru="Whitepaper | CryptoStalker (CSR)">Whitepaper | CryptoStalker (CSR)</title>
   <meta name="description" content="CryptoStalker (CSR) Whitepaper — blockchain details, tokenomics and roadmap for the Solana-based CSR token.">
   <link rel="canonical" href="https://cstlkr.github.io/CSR/whitepaper.html">
+
+  <!-- Language switcher -->
+  <script src="i18n.js" defer></script>
 
   <meta property="og:title" content="Whitepaper | CryptoStalker (CSR)">
   <meta property="og:description" content="CryptoStalker (CSR) Whitepaper — blockchain details, tokenomics and roadmap for the Solana-based CSR token.">
@@ -151,6 +154,40 @@
       text-shadow: none;
       transform: translateX(-50%) translateY(-1px);
       box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    /* language switcher */
+    .lang-switch {
+      position: fixed;
+      top: 60px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .lang-switch .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-dim);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      transition: 0.2s;
+    }
+    .lang-switch .lang-btn + .lang-btn { border-left: 1px solid var(--accent-soft); }
+    .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
+    .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .lang-switch { top: 54px; right: 10px; }
+      .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
     }
 
     /* document panel */
@@ -339,73 +376,78 @@
 
   <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
 
+  <div class="lang-switch" role="group" aria-label="Language / Язык">
+    <button type="button" class="lang-btn" data-lang="en" onclick="CSR_setLang('en')">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru" onclick="CSR_setLang('ru')">RU</button>
+  </div>
+
   <div class="content">
     <div class="doc-header">
       <span>DOC: WHITEPAPER.CSR</span>
-      <span class="status">STATUS: ACTIVE</span>
+      <span class="status" data-en="STATUS: ACTIVE" data-ru="СТАТУС: АКТИВНО">STATUS: ACTIVE</span>
     </div>
 
-    <h1>CryptoStalker Token (CSR) Whitepaper</h1>
-    <div class="subtitle">// SOLANA NETWORK · FAIR LAUNCH · COMMUNITY DRIVEN</div>
+    <h1 data-en="CryptoStalker Token (CSR) Whitepaper" data-ru="Whitepaper токена CryptoStalker (CSR)">CryptoStalker Token (CSR) Whitepaper</h1>
+    <div class="subtitle" data-en="// SOLANA NETWORK · FAIR LAUNCH · COMMUNITY DRIVEN" data-ru="// СЕТЬ SOLANA · ЧЕСТНЫЙ ЗАПУСК · СООБЩЕСТВО">// SOLANA NETWORK · FAIR LAUNCH · COMMUNITY DRIVEN</div>
 
-    <h2>Introduction <span class="tag">01</span></h2>
-    <p>CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development.</p>
+    <h2><span data-en="Introduction" data-ru="Введение">Introduction</span> <span class="tag">01</span></h2>
+    <p data-en="CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development." data-ru="Токен CryptoStalker (CSR) — это децентрализованная криптовалюта, запущенная в блокчейне Solana. Она создана для честного распределения, рыночного ценообразования, прозрачности и развития сообщества.">CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development.</p>
 
-    <h2>Blockchain and Token Details <span class="tag">02</span></h2>
+    <h2><span data-en="Blockchain and Token Details" data-ru="Блокчейн и детали токена">Blockchain and Token Details</span> <span class="tag">02</span></h2>
     <ul>
-      <li><strong>Blockchain:</strong> Solana</li>
-      <li><strong>Ticker:</strong> CSR</li>
-      <li><strong>Total Supply:</strong> 1,000,000,000 CSR</li>
-      <li><strong>Launch Platform:</strong> Pump.fun</li>
-      <li><strong>Future Listing:</strong> Raydium</li>
-      <li><strong>Smart Contract:</strong> Fully auditable and immutable</li>
+      <li><strong data-en="Blockchain:" data-ru="Блокчейн:">Blockchain:</strong> Solana</li>
+      <li><strong data-en="Ticker:" data-ru="Тикер:">Ticker:</strong> CSR</li>
+      <li><strong data-en="Total Supply:" data-ru="Общее предложение:">Total Supply:</strong> 1,000,000,000 CSR</li>
+      <li><strong data-en="Launch Platform:" data-ru="Платформа запуска:">Launch Platform:</strong> Pump.fun</li>
+      <li><strong data-en="Future Listing:" data-ru="Будущий листинг:">Future Listing:</strong> Raydium</li>
+      <li><strong data-en="Smart Contract:" data-ru="Смарт-контракт:">Smart Contract:</strong> <span data-en="Fully auditable and immutable" data-ru="Полностью проверяемый и неизменяемый">Fully auditable and immutable</span></li>
     </ul>
 
-    <h2>Tokenomics <span class="tag">03</span></h2>
+    <h2><span data-en="Tokenomics" data-ru="Токеномика">Tokenomics</span> <span class="tag">03</span></h2>
     <ul>
-      <li><strong>Liquidity Pool (Pump.fun):</strong> 100% (1,000,000,000 CSR)</li>
-      <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
-      <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
-      <li><strong>Fixed Supply:</strong> No additional minting</li>
-      <li><strong>Future Liquidity Transfer:</strong> Transition to Raydium for better accessibility and liquidity</li>
+      <li><strong data-en="Liquidity Pool (Pump.fun):" data-ru="Пул ликвидности (Pump.fun):">Liquidity Pool (Pump.fun):</strong> 100% (1,000,000,000 CSR)</li>
+      <li><strong data-en="Fair Launch:" data-ru="Честный запуск:">Fair Launch:</strong> <span data-en="No pre-mine or team allocation" data-ru="Без предварительной эмиссии и доли команды">No pre-mine or team allocation</span></li>
+      <li><strong data-en="Trading Mechanics:" data-ru="Торговый механизм:">Trading Mechanics:</strong> <span data-en="Entirely driven by supply and demand" data-ru="Полностью определяется спросом и предложением">Entirely driven by supply and demand</span></li>
+      <li><strong data-en="Fixed Supply:" data-ru="Фиксированное предложение:">Fixed Supply:</strong> <span data-en="No additional minting" data-ru="Без дополнительной эмиссии">No additional minting</span></li>
+      <li><strong data-en="Future Liquidity Transfer:" data-ru="Будущий перевод ликвидности:">Future Liquidity Transfer:</strong> <span data-en="Transition to Raydium for better accessibility and liquidity" data-ru="Переход на Raydium для лучшей доступности и ликвидности">Transition to Raydium for better accessibility and liquidity</span></li>
     </ul>
 
-    <h2>Roadmap <span class="tag">04</span></h2>
+    <h2><span data-en="Roadmap" data-ru="Дорожная карта">Roadmap</span> <span class="tag">04</span></h2>
     <div class="roadmap-grid">
       <div class="quarter">
-        <h3>Q4 2025 — Launch and Basic Stages</h3>
+        <h3 data-en="Q4 2025 — Launch and Basic Stages" data-ru="4 кв. 2025 — Запуск и базовые этапы">Q4 2025 — Launch and Basic Stages</h3>
         <ul>
-          <li>Token already launched on Pump.fun</li>
-          <li>Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool</li>
-          <li>Marketing campaign and community building</li>
+          <li data-en="Token already launched on Pump.fun" data-ru="Токен уже запущен на Pump.fun">Token already launched on Pump.fun</li>
+          <li data-en="Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool" data-ru="Ликвидность обеспечена: 100% токенов добавлено в пул ликвидности Pump.fun">Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool</li>
+          <li data-en="Marketing campaign and community building" data-ru="Маркетинговая кампания и формирование сообщества">Marketing campaign and community building</li>
         </ul>
       </div>
       <div class="quarter">
-        <h3>Q1 2026 — Expansion and Exchange Listing</h3>
+        <h3 data-en="Q1 2026 — Expansion and Exchange Listing" data-ru="1 кв. 2026 — Расширение и листинг на биржах">Q1 2026 — Expansion and Exchange Listing</h3>
         <ul>
-          <li>Listing on Raydium</li>
-          <li>Community growth: contests, giveaways, and events</li>
+          <li data-en="Listing on Raydium" data-ru="Листинг на Raydium">Listing on Raydium</li>
+          <li data-en="Community growth: contests, giveaways, and events" data-ru="Рост сообщества: конкурсы, розыгрыши и мероприятия">Community growth: contests, giveaways, and events</li>
         </ul>
       </div>
       <div class="quarter">
-        <h3>Q2 2026 — Partnerships and Exchange Listing</h3>
+        <h3 data-en="Q2 2026 — Partnerships and Exchange Listing" data-ru="2 кв. 2026 — Партнёрства и листинг на биржах">Q2 2026 — Partnerships and Exchange Listing</h3>
         <ul>
-          <li>Establishing strategic partnerships</li>
-          <li>Listing on major DEXs</li>
+          <li data-en="Establishing strategic partnerships" data-ru="Формирование стратегических партнёрств">Establishing strategic partnerships</li>
+          <li data-en="Listing on major DEXs" data-ru="Листинг на крупных DEX-площадках">Listing on major DEXs</li>
         </ul>
       </div>
       <div class="quarter">
-        <h3>Q3 2026 — Sustainable Growth</h3>
+        <h3 data-en="Q3 2026 — Sustainable Growth" data-ru="3 кв. 2026 — Устойчивый рост">Q3 2026 — Sustainable Growth</h3>
         <ul>
-          <li>Community-driven improvements</li>
+          <li data-en="Community-driven improvements" data-ru="Улучшения, инициированные сообществом">Community-driven improvements</li>
         </ul>
       </div>
     </div>
 
-    <h2>Conclusion <span class="tag">05</span></h2>
-    <p>CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy.</p>
+    <h2><span data-en="Conclusion" data-ru="Заключение">Conclusion</span> <span class="tag">05</span></h2>
+    <p data-en="CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy." data-ru="CryptoStalker (CSR) — это токен, управляемый сообществом, с честным запуском, прочной базой ликвидности и прозрачным планом развития. Опираясь на возможности блокчейна Solana и стратегический рост экосистемы, CSR стремится стать ключевым игроком децентрализованной экономики.">CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy.</p>
 
-    <a href="index.html" class="btn-back">‹ Back</a>
+    <a href="index.html" class="btn-back" data-en="‹ Back" data-ru="‹ Назад">‹ Back</a>
   </div>
 </body>
 </html>

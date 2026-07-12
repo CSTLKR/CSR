@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CryptoStalker (CSR) Official Website | Solana Token</title>
+  <title data-en="CryptoStalker (CSR) Official Website | Solana Token" data-ru="CryptoStalker (CSR) — Официальный сайт | Токен на Solana">CryptoStalker (CSR) Official Website | Solana Token</title>
 
   <!-- SEO -->
   <meta name="description" content="CryptoStalker (CSR) is a fair-launch, community-driven token on Solana sharing crypto market trends and trading signals. Join the hunt.">
@@ -36,6 +36,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Language switcher -->
+  <script src="i18n.js" defer></script>
 
   <!-- Styles -->
   <style>
@@ -201,6 +204,40 @@
       text-shadow: none;
       transform: translateX(-50%) translateY(-1px);
       box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    /* language switcher */
+    .lang-switch {
+      position: fixed;
+      top: 64px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .lang-switch .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-dim);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      transition: 0.2s;
+    }
+    .lang-switch .lang-btn + .lang-btn { border-left: 1px solid var(--accent-soft); }
+    .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
+    .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .lang-switch { top: 58px; right: 10px; }
+      .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
     }
 
     /* one-shot glitch flicker on load */
@@ -521,36 +558,41 @@
   <div class="hud-corner br"></div>
   <div class="radar"></div>
 
-  <h1 class="visually-hidden">CryptoStalker (CSR) — Community-Driven Token on Solana</h1>
+  <div class="lang-switch" role="group" aria-label="Language / Язык">
+    <button type="button" class="lang-btn" data-lang="en" onclick="CSR_setLang('en')">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru" onclick="CSR_setLang('ru')">RU</button>
+  </div>
+
+  <h1 class="visually-hidden" data-en="CryptoStalker (CSR) — Community-Driven Token on Solana" data-ru="CryptoStalker (CSR) — токен на Solana, управляемый сообществом">CryptoStalker (CSR) — Community-Driven Token on Solana</h1>
 
   <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
 
   <div class="ticker">
     <div class="ticker-track" aria-hidden="true">
-      <span>NODE: SOLANA MAINNET</span>
-      <span>STATUS: FAIR LAUNCH</span>
-      <span>TRACKING: COMMUNITY ACTIVITY</span>
-      <span>SIGNAL: CHAIN SYNCED</span>
-      <span>NODE: SOLANA MAINNET</span>
-      <span>STATUS: FAIR LAUNCH</span>
-      <span>TRACKING: COMMUNITY ACTIVITY</span>
-      <span>SIGNAL: CHAIN SYNCED</span>
+      <span data-en="NODE: SOLANA MAINNET" data-ru="УЗЕЛ: SOLANA MAINNET">NODE: SOLANA MAINNET</span>
+      <span data-en="STATUS: FAIR LAUNCH" data-ru="СТАТУС: ЧЕСТНЫЙ ЗАПУСК">STATUS: FAIR LAUNCH</span>
+      <span data-en="TRACKING: COMMUNITY ACTIVITY" data-ru="ОТСЛЕЖИВАНИЕ: АКТИВНОСТЬ СООБЩЕСТВА">TRACKING: COMMUNITY ACTIVITY</span>
+      <span data-en="SIGNAL: CHAIN SYNCED" data-ru="СИГНАЛ: СЕТЬ СИНХРОНИЗИРОВАНА">SIGNAL: CHAIN SYNCED</span>
+      <span data-en="NODE: SOLANA MAINNET" data-ru="УЗЕЛ: SOLANA MAINNET">NODE: SOLANA MAINNET</span>
+      <span data-en="STATUS: FAIR LAUNCH" data-ru="СТАТУС: ЧЕСТНЫЙ ЗАПУСК">STATUS: FAIR LAUNCH</span>
+      <span data-en="TRACKING: COMMUNITY ACTIVITY" data-ru="ОТСЛЕЖИВАНИЕ: АКТИВНОСТЬ СООБЩЕСТВА">TRACKING: COMMUNITY ACTIVITY</span>
+      <span data-en="SIGNAL: CHAIN SYNCED" data-ru="СИГНАЛ: СЕТЬ СИНХРОНИЗИРОВАНА">SIGNAL: CHAIN SYNCED</span>
     </div>
   </div>
 
   <div class="ca-box">
-    <span class="ca-label">CONTRACT ADDRESS</span>
+    <span class="ca-label" data-en="CONTRACT ADDRESS" data-ru="АДРЕС КОНТРАКТА">CONTRACT ADDRESS</span>
     <div class="ca-row">
       <span class="ca-value" id="ca-value">FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump</span>
-      <button class="ca-copy" id="ca-copy" onclick="copyCA()">Copy</button>
+      <button class="ca-copy" id="ca-copy" onclick="copyCA()" data-en="Copy" data-ru="Копировать">Copy</button>
     </div>
   </div>
 
   <div class="buttons">
-    <a href="tokenomics.html" class="btn">Tokenomics</a>
-    <a href="https://pump.fun/coin/FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump" class="btn btn-wide" target="_blank">Buy Token</a>
+    <a href="tokenomics.html" class="btn" data-en="Tokenomics" data-ru="Токеномика">Tokenomics</a>
+    <a href="https://pump.fun/coin/FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump" class="btn btn-wide" target="_blank" data-en="Buy Token" data-ru="Купить токен">Buy Token</a>
     <a href="whitepaper.html" class="btn" target="_blank">Whitepaper</a>
-    <a href="roadmap.html" class="btn" target="_blank">Roadmap</a>
+    <a href="roadmap.html" class="btn" target="_blank" data-en="Roadmap" data-ru="Дорожная карта">Roadmap</a>
     <a href="https://x.com/CSRcoinOfficial" class="btn" target="_blank">Twitter</a>
     <a href="https://t.me/CRYPTOSTLKR" class="btn" target="_blank">Telegram</a>
     <a href="https://www.tiktok.com/@cryptostalker_csr" class="btn" target="_blank">TikTok</a>
@@ -562,11 +604,14 @@
     function copyCA() {
       const text = document.getElementById('ca-value').textContent;
       const btn = document.getElementById('ca-copy');
+      const lang = (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      const copiedText = lang === 'ru' ? 'Скопировано ✓' : 'Copied ✓';
+      const defaultText = lang === 'ru' ? 'Копировать' : 'Copy';
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = 'Copied ✓';
+        btn.textContent = copiedText;
         btn.classList.add('copied');
         setTimeout(() => {
-          btn.textContent = 'Copy';
+          btn.textContent = defaultText;
           btn.classList.remove('copied');
         }, 1500);
       });

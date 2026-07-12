@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tokenomics | CryptoStalker (CSR)</title>
+  <title data-en="Tokenomics | CryptoStalker (CSR)" data-ru="Токеномика | CryptoStalker (CSR)">Tokenomics | CryptoStalker (CSR)</title>
   <meta name="description" content="CSR tokenomics: 1,000,000,000 fixed supply, 100% fair launch liquidity on Pump.fun, no team allocation, no pre-mine.">
   <link rel="canonical" href="https://cstlkr.github.io/CSR/tokenomics.html">
+
+  <!-- Language switcher -->
+  <script src="i18n.js" defer></script>
 
   <meta property="og:title" content="Tokenomics | CryptoStalker (CSR)">
   <meta property="og:description" content="CSR tokenomics: 1,000,000,000 fixed supply, 100% fair launch liquidity on Pump.fun, no team allocation, no pre-mine.">
@@ -150,6 +153,40 @@
       text-shadow: none;
       transform: translateX(-50%) translateY(-1px);
       box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    /* language switcher */
+    .lang-switch {
+      position: fixed;
+      top: 60px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .lang-switch .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-dim);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      transition: 0.2s;
+    }
+    .lang-switch .lang-btn + .lang-btn { border-left: 1px solid var(--accent-soft); }
+    .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
+    .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .lang-switch { top: 54px; right: 10px; }
+      .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
     }
 
     /* document panel */
@@ -368,52 +405,57 @@
 
   <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
 
+  <div class="lang-switch" role="group" aria-label="Language / Язык">
+    <button type="button" class="lang-btn" data-lang="en" onclick="CSR_setLang('en')">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru" onclick="CSR_setLang('ru')">RU</button>
+  </div>
+
   <div class="content">
     <div class="doc-header">
       <span>DOC: TOKENOMICS.CSR</span>
-      <span class="status">STATUS: ACTIVE</span>
+      <span class="status" data-en="STATUS: ACTIVE" data-ru="СТАТУС: АКТИВНО">STATUS: ACTIVE</span>
     </div>
 
-    <h1>CryptoStalker Token (CSR) Tokenomics</h1>
-    <div class="subtitle">// FIXED SUPPLY · 100% FAIR LAUNCH · NO TEAM ALLOCATION</div>
+    <h1 data-en="CryptoStalker Token (CSR) Tokenomics" data-ru="Токеномика токена CryptoStalker (CSR)">CryptoStalker Token (CSR) Tokenomics</h1>
+    <div class="subtitle" data-en="// FIXED SUPPLY · 100% FAIR LAUNCH · NO TEAM ALLOCATION" data-ru="// ФИКСИРОВАННЫЙ ВЫПУСК · 100% ЧЕСТНЫЙ ЗАПУСК · БЕЗ ДОЛИ КОМАНДЫ">// FIXED SUPPLY · 100% FAIR LAUNCH · NO TEAM ALLOCATION</div>
 
-    <h2>Key Figures <span class="tag">01</span></h2>
+    <h2><span data-en="Key Figures" data-ru="Ключевые показатели">Key Figures</span> <span class="tag">01</span></h2>
     <div class="stat-grid">
       <div class="stat-box">
-        <span class="label">TOTAL SUPPLY</span>
+        <span class="label" data-en="TOTAL SUPPLY" data-ru="ОБЩЕЕ ПРЕДЛОЖЕНИЕ">TOTAL SUPPLY</span>
         <span class="value">1,000,000,000 CSR</span>
       </div>
       <div class="stat-box">
-        <span class="label">TEAM / PRE-MINE</span>
+        <span class="label" data-en="TEAM / PRE-MINE" data-ru="КОМАНДА / ПРЕДВАРИТЕЛЬНАЯ ЭМИССИЯ">TEAM / PRE-MINE</span>
         <span class="value">0%</span>
       </div>
       <div class="stat-box">
-        <span class="label">LIQUIDITY POOL</span>
+        <span class="label" data-en="LIQUIDITY POOL" data-ru="ПУЛ ЛИКВИДНОСТИ">LIQUIDITY POOL</span>
         <span class="value">100%</span>
       </div>
       <div class="stat-box">
-        <span class="label">MINTING</span>
-        <span class="value">DISABLED</span>
+        <span class="label" data-en="MINTING" data-ru="ЭМИССИЯ">MINTING</span>
+        <span class="value" data-en="DISABLED" data-ru="ОТКЛЮЧЕНА">DISABLED</span>
       </div>
     </div>
 
-    <h2>Supply Allocation <span class="tag">02</span></h2>
+    <h2><span data-en="Supply Allocation" data-ru="Распределение предложения">Supply Allocation</span> <span class="tag">02</span></h2>
     <div class="alloc-bar"><div class="alloc-bar-fill"></div></div>
-    <div class="alloc-caption">100% — LIQUIDITY POOL (PUMP.FUN)</div>
-    <p>The entire supply of 1,000,000,000 CSR was added directly to the Pump.fun liquidity pool at launch. There is no team wallet, no pre-mine, and no private or presale allocation — every token in circulation entered the market the same way.</p>
+    <div class="alloc-caption" data-en="100% — LIQUIDITY POOL (PUMP.FUN)" data-ru="100% — ПУЛ ЛИКВИДНОСТИ (PUMP.FUN)">100% — LIQUIDITY POOL (PUMP.FUN)</div>
+    <p data-en="The entire supply of 1,000,000,000 CSR was added directly to the Pump.fun liquidity pool at launch. There is no team wallet, no pre-mine, and no private or presale allocation — every token in circulation entered the market the same way." data-ru="Весь выпуск в размере 1 000 000 000 CSR был напрямую добавлен в пул ликвидности Pump.fun при запуске. Нет кошелька команды, нет предварительной эмиссии и нет приватного или предпродажного распределения — каждый токен в обращении вышел на рынок одинаковым способом.">The entire supply of 1,000,000,000 CSR was added directly to the Pump.fun liquidity pool at launch. There is no team wallet, no pre-mine, and no private or presale allocation — every token in circulation entered the market the same way.</p>
 
-    <h2>Distribution Principles <span class="tag">03</span></h2>
+    <h2><span data-en="Distribution Principles" data-ru="Принципы распределения">Distribution Principles</span> <span class="tag">03</span></h2>
     <ul>
-      <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
-      <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
-      <li><strong>Fixed Supply:</strong> No additional minting, ever</li>
-      <li><strong>Future Liquidity Transfer:</strong> Planned transition to Raydium for wider accessibility and deeper liquidity</li>
+      <li><strong data-en="Fair Launch:" data-ru="Честный запуск:">Fair Launch:</strong> <span data-en="No pre-mine or team allocation" data-ru="Без предварительной эмиссии и доли команды">No pre-mine or team allocation</span></li>
+      <li><strong data-en="Trading Mechanics:" data-ru="Торговый механизм:">Trading Mechanics:</strong> <span data-en="Entirely driven by supply and demand" data-ru="Полностью определяется спросом и предложением">Entirely driven by supply and demand</span></li>
+      <li><strong data-en="Fixed Supply:" data-ru="Фиксированное предложение:">Fixed Supply:</strong> <span data-en="No additional minting, ever" data-ru="Дополнительная эмиссия невозможна — никогда">No additional minting, ever</span></li>
+      <li><strong data-en="Future Liquidity Transfer:" data-ru="Будущий перевод ликвидности:">Future Liquidity Transfer:</strong> <span data-en="Planned transition to Raydium for wider accessibility and deeper liquidity" data-ru="Запланирован переход на Raydium для большей доступности и глубины ликвидности">Planned transition to Raydium for wider accessibility and deeper liquidity</span></li>
     </ul>
 
-    <h2>Why It Matters <span class="tag">04</span></h2>
-    <p>Because 100% of supply started in the open liquidity pool, no single wallet holds an outsized allocation that could be dumped on holders. Price discovery happens purely through market activity, which keeps the token's distribution aligned with the community that trades and holds it.</p>
+    <h2><span data-en="Why It Matters" data-ru="Почему это важно">Why It Matters</span> <span class="tag">04</span></h2>
+    <p data-en="Because 100% of supply started in the open liquidity pool, no single wallet holds an outsized allocation that could be dumped on holders. Price discovery happens purely through market activity, which keeps the token's distribution aligned with the community that trades and holds it." data-ru="Поскольку 100% предложения изначально находилось в открытом пуле ликвидности, ни один кошелёк не владеет непропорционально большой долей, которую можно было бы сбросить на держателей. Цена формируется исключительно рыночной активностью, что сохраняет распределение токена в соответствии с сообществом, которое его торгует и держит.">Because 100% of supply started in the open liquidity pool, no single wallet holds an outsized allocation that could be dumped on holders. Price discovery happens purely through market activity, which keeps the token's distribution aligned with the community that trades and holds it.</p>
 
-    <a href="index.html" class="btn-back">‹ Back</a>
+    <a href="index.html" class="btn-back" data-en="‹ Back" data-ru="‹ Назад">‹ Back</a>
   </div>
 </body>
 </html>

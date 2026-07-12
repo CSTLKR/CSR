@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | CryptoStalker (CSR)</title>
+  <title data-en="About | CryptoStalker (CSR)" data-ru="О проекте | CryptoStalker (CSR)">About | CryptoStalker (CSR)</title>
   <meta name="description" content="CryptoStalker (CSR) — a community-driven token on Solana that tracks market movements and shares signals with its holders.">
   <link rel="canonical" href="https://cstlkr.github.io/CSR/about.html">
+
+  <!-- Language switcher -->
+  <script src="i18n.js" defer></script>
 
   <meta property="og:title" content="About | CryptoStalker (CSR)">
   <meta property="og:description" content="CryptoStalker (CSR) — a community-driven token on Solana that tracks market movements and shares signals with its holders.">
@@ -148,6 +151,40 @@
       box-shadow: 0 0 22px var(--accent-soft);
     }
 
+    /* language switcher */
+    .lang-switch {
+      position: fixed;
+      top: 60px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .lang-switch .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-dim);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      transition: 0.2s;
+    }
+    .lang-switch .lang-btn + .lang-btn { border-left: 1px solid var(--accent-soft); }
+    .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
+    .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .lang-switch { top: 54px; right: 10px; }
+      .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
+    }
+
     header {
       position: relative;
       z-index: 2;
@@ -270,38 +307,43 @@
 
   <a href="index.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
 
+  <div class="lang-switch" role="group" aria-label="Language / Язык">
+    <button type="button" class="lang-btn" data-lang="en" onclick="CSR_setLang('en')">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru" onclick="CSR_setLang('ru')">RU</button>
+  </div>
+
   <header>
     <h1>CryptoStalker (CSR)</h1>
-    <p>The crypto hunter leading its community through chaos to real gains — profit.</p>
+    <p data-en="The crypto hunter leading its community through chaos to real gains — profit." data-ru="Крипто-охотник, ведущий своё сообщество сквозь хаос к реальной прибыли.">The crypto hunter leading its community through chaos to real gains — profit.</p>
   </header>
 
   <main>
     <section>
-      <h2>Project Idea</h2>
-      <p>In a world where the market changes every second, CryptoStalker acts as a guide and protector of the community. Hidden in the digital shadow, it tracks market movements, finds entry points, identifies trends, and shares only the most valuable information.</p>
-      <p>The mission of CryptoStalker is to give its holders an edge where others see only noise.</p>
+      <h2 data-en="Project Idea" data-ru="Идея проекта">Project Idea</h2>
+      <p data-en="In a world where the market changes every second, CryptoStalker acts as a guide and protector of the community. Hidden in the digital shadow, it tracks market movements, finds entry points, identifies trends, and shares only the most valuable information." data-ru="В мире, где рынок меняется каждую секунду, CryptoStalker выступает проводником и защитником своего сообщества. Скрытый в цифровой тени, он отслеживает движения рынка, находит точки входа, выявляет тренды и делится только самой ценной информацией.">In a world where the market changes every second, CryptoStalker acts as a guide and protector of the community. Hidden in the digital shadow, it tracks market movements, finds entry points, identifies trends, and shares only the most valuable information.</p>
+      <p data-en="The mission of CryptoStalker is to give its holders an edge where others see only noise." data-ru="Миссия CryptoStalker — дать своим holders преимущество там, где другие видят лишь шум.">The mission of CryptoStalker is to give its holders an edge where others see only noise.</p>
     </section>
 
     <section>
-      <h2>Private Community</h2>
-      <p>CSR token holders have access to a private Telegram channel, where the following is published:</p>
+      <h2 data-en="Private Community" data-ru="Закрытое сообщество">Private Community</h2>
+      <p data-en="CSR token holders have access to a private Telegram channel, where the following is published:" data-ru="Держатели токена CSR получают доступ к закрытому Telegram-каналу, где публикуются:">CSR token holders have access to a private Telegram channel, where the following is published:</p>
       <ul>
-        <li>Futures signals</li>
-        <li>Technical analysis</li>
-        <li>Trend reviews</li>
-        <li>Early discoveries and ideas</li>
+        <li data-en="Futures signals" data-ru="Сигналы по фьючерсам">Futures signals</li>
+        <li data-en="Technical analysis" data-ru="Технический анализ">Technical analysis</li>
+        <li data-en="Trend reviews" data-ru="Обзоры трендов">Trend reviews</li>
+        <li data-en="Early discoveries and ideas" data-ru="Ранние находки и идеи">Early discoveries and ideas</li>
       </ul>
-      <p>This is a place where crypto hunters gather, share experiences, and get the tools to consistently profit.</p>
+      <p data-en="This is a place where crypto hunters gather, share experiences, and get the tools to consistently profit." data-ru="Это место, где крипто-охотники собираются, делятся опытом и получают инструменты для стабильной прибыли.">This is a place where crypto hunters gather, share experiences, and get the tools to consistently profit.</p>
     </section>
 
     <section>
-      <h2>CSR Token</h2>
-      <p>The CSR token is the key to the CryptoStalker ecosystem. It provides access to private content, and as the community grows, its value strengthens with a foundation — real utility and an active community base.</p>
+      <h2 data-en="CSR Token" data-ru="Токен CSR">CSR Token</h2>
+      <p data-en="The CSR token is the key to the CryptoStalker ecosystem. It provides access to private content, and as the community grows, its value strengthens with a foundation — real utility and an active community base." data-ru="Токен CSR — это ключ к экосистеме CryptoStalker. Он открывает доступ к закрытому контенту, и по мере роста сообщества его ценность укрепляется за счёт реальной пользы и активной базы держателей.">The CSR token is the key to the CryptoStalker ecosystem. It provides access to private content, and as the community grows, its value strengthens with a foundation — real utility and an active community base.</p>
     </section>
   </main>
 
   <footer>
-    © 2025 CryptoStalker | <a href="https://t.me/CRYPTOSTLKR" target="_blank">Join the community</a>
+    <span>© 2025 CryptoStalker |</span> <a href="https://t.me/CRYPTOSTLKR" target="_blank" data-en="Join the community" data-ru="Присоединиться к сообществу">Join the community</a>
   </footer>
 </body>
 </html>
