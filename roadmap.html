@@ -271,6 +271,24 @@
     }
     li b { color: var(--accent); font-family: var(--mono); font-weight: 600; }
 
+    .disclaimer {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-left: 2px solid var(--alert);
+      background: rgba(255, 84, 112, 0.08);
+      border-radius: 3px;
+      font-family: var(--sans);
+      font-size: 0.8em;
+      line-height: 1.55;
+      color: var(--fg-dim);
+    }
+    .disclaimer b { color: var(--alert); font-family: var(--mono); letter-spacing: 0.03em; }
+
+    .disclaimer.footer-note {
+      margin-top: 30px;
+      margin-bottom: 6px;
+    }
+
     .btn-back {
       margin-top: 24px;
       padding: 12px 22px;
@@ -349,6 +367,9 @@
           <li>CryptoStalker Premium Signals Telegram is live</li>
           <li>Holders of <b>5,000,000+ CSR</b> get access to VIP futures trading signals and analytics</li>
         </ul>
+        <div class="disclaimer">
+          <b>⚠ Disclaimer:</b> Signals, analytics, and any content shared in the CryptoStalker Telegram are for informational and educational purposes only. They do not constitute financial, investment, or trading advice. Crypto trading carries substantial risk of loss. Always do your own research (DYOR) and never invest more than you can afford to lose.
+        </div>
       </div>
 
       <div class="stage">
@@ -386,6 +407,10 @@
           <li>Building a long-term crypto ecosystem around CryptoStalker</li>
         </ul>
       </div>
+    </div>
+
+    <div class="disclaimer footer-note">
+      <b>⚠ Risk Notice:</b> CSR is a highly volatile digital asset with no guaranteed value or return. Nothing on this page or in CryptoStalker channels is financial advice. Trading signals and analytics are opinions shared for informational purposes — verify independently before acting.
     </div>
 
     <a href="index.html" class="btn-back">‹ Back</a>
