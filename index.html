@@ -235,7 +235,7 @@
     .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
     .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       .lang-switch { top: 58px; right: 10px; }
       .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
     }
@@ -513,6 +513,112 @@
       #signal-net { display: none; }
     }
 
+    /* top-5 crypto price widget — fixed bottom-right floating card */
+    .crypto-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 16px;
+      z-index: 8;
+      width: 270px;
+      max-width: calc(100vw - 28px);
+      padding: 10px 14px 4px;
+      background: var(--panel);
+      backdrop-filter: blur(3px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 6px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.4);
+    }
+    .crypto-widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 0.66em;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+      margin-bottom: 4px;
+    }
+    .crypto-widget-updated { opacity: 0.75; letter-spacing: 0.04em; }
+    .crypto-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-family: var(--sans);
+      font-size: 0.82em;
+      text-align: left;
+    }
+    .crypto-row:last-child { border-bottom: none; }
+    .crypto-rank {
+      color: var(--fg-dim);
+      font-family: var(--mono);
+      font-size: 0.85em;
+      width: 12px;
+      flex-shrink: 0;
+    }
+    .crypto-icon { width: 15px; height: 15px; border-radius: 50%; flex-shrink: 0; }
+    .crypto-name {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--fg);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .crypto-fullname { margin-right: 4px; white-space: nowrap; }
+    .crypto-symbol { color: var(--fg-dim); font-family: var(--mono); font-size: 0.85em; }
+    .crypto-price {
+      font-family: var(--mono);
+      font-weight: 600;
+      color: var(--fg);
+      flex-shrink: 0;
+      text-align: right;
+      min-width: 70px;
+      font-size: 0.95em;
+    }
+    .crypto-change {
+      font-family: var(--mono);
+      font-size: 0.8em;
+      flex-shrink: 0;
+      min-width: 50px;
+      text-align: right;
+    }
+    .crypto-change.up { color: var(--accent); }
+    .crypto-change.down { color: var(--alert); }
+    .crypto-loading, .crypto-error {
+      font-family: var(--mono);
+      font-size: 0.74em;
+      color: var(--fg-dim);
+      text-align: center;
+      padding: 8px 0;
+      letter-spacing: 0.03em;
+    }
+
+    @media (max-width: 768px) {
+      .crypto-widget {
+        top: 88px;
+        right: 10px;
+        bottom: auto;
+        left: auto;
+        width: 138px;
+        padding: 5px 7px 2px;
+        border-radius: 4px;
+      }
+      .crypto-widget-header { font-size: 0.58em; margin-bottom: 2px; }
+      .crypto-widget-updated { display: none; }
+      .crypto-row { font-size: 0.64em; gap: 4px; padding: 4px 0; }
+      .crypto-rank { display: none; }
+      .crypto-icon { width: 12px; height: 12px; }
+      .crypto-fullname { display: none; }
+      .crypto-symbol { font-size: 0.95em; }
+      .crypto-price { min-width: 44px; font-size: 0.9em; }
+      .crypto-change { min-width: 32px; font-size: 0.66em; }
+    }
+
     /* visually hidden but readable by search engines and screen readers */
     .visually-hidden {
       position: absolute;
@@ -577,6 +683,16 @@
       <span data-en="STATUS: FAIR LAUNCH" data-ru="СТАТУС: ЧЕСТНЫЙ ЗАПУСК">STATUS: FAIR LAUNCH</span>
       <span data-en="TRACKING: COMMUNITY ACTIVITY" data-ru="ОТСЛЕЖИВАНИЕ: АКТИВНОСТЬ СООБЩЕСТВА">TRACKING: COMMUNITY ACTIVITY</span>
       <span data-en="SIGNAL: CHAIN SYNCED" data-ru="СИГНАЛ: СЕТЬ СИНХРОНИЗИРОВАНА">SIGNAL: CHAIN SYNCED</span>
+    </div>
+  </div>
+
+  <div class="crypto-widget" id="crypto-widget">
+    <div class="crypto-widget-header">
+      <span data-en="TOP 5 CRYPTO" data-ru="ТОП 5 КРИПТОВАЛЮТ">TOP 5 CRYPTO</span>
+      <span class="crypto-widget-updated" id="crypto-updated"></span>
+    </div>
+    <div class="crypto-widget-list" id="crypto-list">
+      <div class="crypto-loading" data-en="Loading market data…" data-ru="Загрузка рыночных данных…">Loading market data…</div>
     </div>
   </div>
 
@@ -721,6 +837,119 @@
       }
       // iOS requires a user gesture to grant motion permission
       document.body.addEventListener('touchstart', enableGyro, { once: true });
+    })();
+
+    // ---- top-5 crypto price widget (CoinGecko public API, no key required) ----
+    (function () {
+      var listEl = document.getElementById('crypto-list');
+      var updatedEl = document.getElementById('crypto-updated');
+      var COIN_IDS = ['bitcoin', 'ethereum', 'solana', 'binancecoin', 'ripple'];
+      var API_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + COIN_IDS.join(',') + '&sparkline=false&price_change_percentage=24h';
+      var REFRESH_MS = 60000;
+
+      function lang() {
+        return (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      }
+
+      function fmtPrice(p) {
+        var decimals = p >= 1 ? 2 : (p >= 0.01 ? 4 : 6);
+        return '$' + p.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      }
+
+      function render(coins) {
+        listEl.innerHTML = '';
+        coins.forEach(function (c, i) {
+          var change = c.price_change_percentage_24h;
+          var hasChange = typeof change === 'number' && !isNaN(change);
+          var changeClass = hasChange ? (change >= 0 ? 'up' : 'down') : '';
+          var changeText = hasChange ? (change >= 0 ? '+' : '') + change.toFixed(2) + '%' : '—';
+
+          var row = document.createElement('div');
+          row.className = 'crypto-row';
+
+          var rank = document.createElement('span');
+          rank.className = 'crypto-rank';
+          rank.textContent = i + 1;
+
+          var icon = document.createElement('img');
+          icon.className = 'crypto-icon';
+          icon.src = c.image;
+          icon.alt = '';
+          icon.loading = 'lazy';
+
+          var name = document.createElement('span');
+          name.className = 'crypto-name';
+          var fullname = document.createElement('span');
+          fullname.className = 'crypto-fullname';
+          fullname.textContent = c.name;
+          var symbol = document.createElement('span');
+          symbol.className = 'crypto-symbol';
+          symbol.textContent = c.symbol ? c.symbol.toUpperCase() : '';
+          name.appendChild(icon);
+          name.appendChild(fullname);
+          name.appendChild(symbol);
+
+          var price = document.createElement('span');
+          price.className = 'crypto-price';
+          price.textContent = fmtPrice(c.current_price);
+
+          var changeEl = document.createElement('span');
+          changeEl.className = 'crypto-change ' + changeClass;
+          changeEl.textContent = changeText;
+
+          row.appendChild(rank);
+          row.appendChild(name);
+          row.appendChild(price);
+          row.appendChild(changeEl);
+          listEl.appendChild(row);
+        });
+      }
+
+      function showError() {
+        listEl.innerHTML = '<div class="crypto-error"></div>';
+        var el = listEl.querySelector('.crypto-error');
+        el.textContent = lang() === 'ru'
+          ? 'Не удалось загрузить рыночные данные. Попробуем ещё раз через минуту.'
+          : 'Could not load market data. Retrying in a minute.';
+      }
+
+      function updateTimestamp() {
+        var now = new Date();
+        var time = now.toLocaleTimeString(lang() === 'ru' ? 'ru-RU' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        updatedEl.textContent = (lang() === 'ru' ? 'Обновлено ' : 'Updated ') + time;
+      }
+
+      var lastCoins = null;
+
+      function load() {
+        fetch(API_URL)
+          .then(function (res) {
+            if (!res.ok) throw new Error('bad response');
+            return res.json();
+          })
+          .then(function (data) {
+            data.sort(function (a, b) {
+              return COIN_IDS.indexOf(a.id) - COIN_IDS.indexOf(b.id);
+            });
+            lastCoins = data;
+            render(data);
+            updateTimestamp();
+          })
+          .catch(showError);
+      }
+
+      // re-render immediately on language switch (updates the "Updated HH:MM" label,
+      // and re-shows a translated error message if the last fetch had failed)
+      document.addEventListener('csr:langchange', function () {
+        if (lastCoins) {
+          updateTimestamp();
+        } else {
+          showError();
+        }
+      });
+
+      load();
+      setInterval(load, REFRESH_MS);
     })();
   </script>
 </body>

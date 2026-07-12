@@ -30,6 +30,7 @@
   window.CSR_setLang = function (lang) {
     localStorage.setItem(STORAGE_KEY, lang);
     apply(lang);
+    document.dispatchEvent(new CustomEvent('csr:langchange', { detail: { lang: lang } }));
   };
 
   window.CSR_getLang = getLang;
