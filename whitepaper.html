@@ -1,110 +1,395 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CryptoStalker Whitepaper</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: url('https://i.ibb.co/bgrxfMry/image.jpg') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            color: white;
-            text-align: center;
-            padding-top: 100px;
-        }
-        .content {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 80%;
-        }
-        .btn-back {
-            padding: 10px 20px;
-            font-size: 1.2em;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid white;
-            border-radius: 10px;
-            text-decoration: none;
-            text-align: center;
-            transition: 0.3s;
-            margin-top: 20px;
-            display: inline-block;
-        }
-        .btn-back:hover {
-            background: white;
-            color: black;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CryptoStalker Whitepaper</title>
+  <meta name="description" content="CryptoStalker (CSR) Whitepaper — blockchain details, tokenomics and roadmap for the Solana-based CSR token.">
+
+  <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/qLSX08wK/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/Bm3npct/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070a08;
+      --panel: rgba(9, 20, 15, 0.78);
+      --panel-solid: #0d1712;
+      --fg: #dff5e6;
+      --fg-dim: #8fada0;
+      --accent: #2ee6a6;
+      --accent-soft: rgba(46, 230, 166, 0.35);
+      --alert: #ff5470;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--bg); }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://i.ibb.co/bgrxfMry/image.jpg') center center / cover no-repeat fixed;
+      min-height: 100vh;
+      font-family: var(--sans);
+      color: var(--fg);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding: 100px 16px 60px;
+      overflow-x: hidden;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center 35%, rgba(0,0,0,0.35) 0%, rgba(3,8,6,0.86) 65%, rgba(2,5,4,0.95) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 2px, transparent 4px);
+      mix-blend-mode: overlay;
+      animation: scan-drift 9s linear infinite;
+    }
+    @keyframes scan-drift { 0% { background-position: 0 0; } 100% { background-position: 0 40px; } }
+
+    .hud-corner {
+      position: fixed;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--accent-soft);
+      z-index: 6;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .hud-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+    .hud-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+    .hud-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+    .hud-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
+
+    .radar {
+      position: fixed;
+      top: 26px;
+      left: 26px;
+      width: 12px;
+      height: 12px;
+      z-index: 6;
+      pointer-events: none;
+    }
+    .radar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px 2px var(--accent-soft);
+    }
+    .radar::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-soft);
+      animation: radar-ping 2.4s ease-out infinite;
+    }
+    @keyframes radar-ping { 0% { transform: scale(0.3); opacity: 0.9; } 100% { transform: scale(2.6); opacity: 0; } }
+
+    .top-button {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 7;
+      padding: 10px 22px;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.05em;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: 0.25s;
+      text-shadow: 0 0 12px var(--accent-soft);
+    }
+    .top-button:hover {
+      background: var(--accent);
+      color: #05130d;
+      border-color: var(--accent);
+      text-shadow: none;
+      transform: translateX(-50%) translateY(-1px);
+      box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    /* document panel */
+    .content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 760px;
+      background: var(--panel);
+      backdrop-filter: blur(3px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 6px;
+      padding: 8px 34px 34px;
+      text-align: left;
+      animation: content-in 0.6s ease-out both;
+    }
+    @keyframes content-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-bottom: 1px solid var(--accent-soft);
+      padding: 14px 0;
+      font-family: var(--mono);
+      font-size: 0.72em;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+    }
+    .doc-header span.status { color: var(--accent); }
+
+    h1 {
+      font-family: var(--mono);
+      font-weight: 800;
+      font-size: 1.6em;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      text-shadow: 0 0 16px var(--accent-soft);
+      margin: 22px 0 4px;
+    }
+    .subtitle {
+      font-family: var(--mono);
+      font-size: 0.8em;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    h2 {
+      font-family: var(--mono);
+      font-size: 1.05em;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin: 34px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--accent-soft);
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    h2 .tag {
+      font-size: 0.7em;
+      color: var(--fg-dim);
+      letter-spacing: 0.1em;
+    }
+
+    h3 {
+      font-family: var(--mono);
+      font-size: 0.92em;
+      color: var(--fg);
+      letter-spacing: 0.03em;
+      margin: 20px 0 8px;
+      padding-left: 12px;
+      border-left: 2px solid var(--accent);
+    }
+
+    p {
+      font-family: var(--sans);
+      font-size: 0.98em;
+      line-height: 1.65;
+      color: var(--fg);
+      opacity: 0.92;
+      margin: 0 0 14px;
+    }
+
+    ul { margin: 0 0 10px; padding-left: 0; list-style: none; }
+    li {
+      font-family: var(--sans);
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: var(--fg);
+      opacity: 0.92;
+      padding: 6px 0 6px 22px;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    li::before {
+      content: "›";
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    li strong {
+      font-family: var(--mono);
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .roadmap-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .quarter {
+      background: rgba(46, 230, 166, 0.06);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      padding: 4px 16px 8px;
+    }
+
+    .btn-back {
+      margin-top: 30px;
+      padding: 12px 22px;
+      font-family: var(--mono);
+      font-size: 1em;
+      letter-spacing: 0.03em;
+      color: var(--fg);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      transition: 0.25s;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-back::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(46,230,166,0.35), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn-back:hover::after { left: 130%; }
+    .btn-back:hover {
+      background: rgba(46, 230, 166, 0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 18px rgba(46,230,166,0.18);
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 84px 10px 40px; }
+      .content { padding: 6px 20px 26px; }
+      h1 { font-size: 1.3em; }
+      .hud-corner { width: 22px; height: 22px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .crt-overlay, .radar::after, body, .content, .btn-back::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <div class="content">
-        <h1>CryptoStalker Token (CSR) Whitepaper</h1>
-        
-        <h2>Introduction</h2>
-        <p>CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development.</p>
-        
-        <h2>Blockchain and Token Details</h2>
-        <ul>
-            <li><strong>Blockchain:</strong> Solana</li>
-            <li><strong>Ticker:</strong> CSR</li>
-            <li><strong>Total Supply:</strong> 1,000,000,000 CSR</li>
-            <li><strong>Launch Platform:</strong> Pump.fun</li>
-            <li><strong>Future Listing:</strong> Raydium</li>
-            <li><strong>Smart Contract:</strong> Fully auditable and immutable</li>
-        </ul>
-        
-        <h2>Tokenomics</h2>
-        <ul>
-            <li><strong>Liquidity Pool (Pump.fun):</strong> 100% (1,000,000,000 CSR)</li>
-            <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
-            <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
-            <li><strong>Fixed Supply:</strong> No additional minting</li>
-            <li><strong>Future Liquidity Transfer:</strong> Transition to Raydium for better accessibility and liquidity</li>
-        </ul>
-        
-        <h2>Roadmap</h2>
-        
-        <h3>Q4 2025 – Launch and Basic Stages</h3>
-        <ul>
-            <li>Token already launched on Pump.fun</li>
-            <li>Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool</li>
-            <li>Marketing campaign and community building</li>
-        </ul>
-        
-        <h3>Q1 2026 – Expansion and Exchange Listing</h3>
-        <ul>
-            <li>Listing on Raydium</li>
-            <li>Community growth: contests, giveaways, and events</li>
-        </ul>
-        
-        <h3>Q2 2026 – Partnerships and Exchange Listing</h3>
-        <ul>
-            <li>Establishing strategic partnerships</li>
-            <li>Listing on major DEXs</li>
-        </ul>
-        
-        <h3>Q3 2026 – Sustainable Growth</h3>
-        <ul>
-            <li>Community-driven improvements</li>
-        </ul>
-        
-        <h2>Conclusion</h2>
-        <p>CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy.</p>
-        
-        <!-- Button to go back to the main page -->
-        <a href="index.html" class="btn-back">Back</a>
+  <div class="crt-overlay"></div>
+  <div class="hud-corner tl"></div>
+  <div class="hud-corner tr"></div>
+  <div class="hud-corner bl"></div>
+  <div class="hud-corner br"></div>
+  <div class="radar"></div>
+
+  <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
+
+  <div class="content">
+    <div class="doc-header">
+      <span>DOC: WHITEPAPER.CSR</span>
+      <span class="status">STATUS: ACTIVE</span>
     </div>
+
+    <h1>CryptoStalker Token (CSR) Whitepaper</h1>
+    <div class="subtitle">// SOLANA NETWORK · FAIR LAUNCH · COMMUNITY DRIVEN</div>
+
+    <h2>Introduction <span class="tag">01</span></h2>
+    <p>CryptoStalker Token (CSR) is a decentralized cryptocurrency launched on the Solana blockchain. It is designed for fair distribution, market-driven pricing, transparency, and community development.</p>
+
+    <h2>Blockchain and Token Details <span class="tag">02</span></h2>
+    <ul>
+      <li><strong>Blockchain:</strong> Solana</li>
+      <li><strong>Ticker:</strong> CSR</li>
+      <li><strong>Total Supply:</strong> 1,000,000,000 CSR</li>
+      <li><strong>Launch Platform:</strong> Pump.fun</li>
+      <li><strong>Future Listing:</strong> Raydium</li>
+      <li><strong>Smart Contract:</strong> Fully auditable and immutable</li>
+    </ul>
+
+    <h2>Tokenomics <span class="tag">03</span></h2>
+    <ul>
+      <li><strong>Liquidity Pool (Pump.fun):</strong> 100% (1,000,000,000 CSR)</li>
+      <li><strong>Fair Launch:</strong> No pre-mine or team allocation</li>
+      <li><strong>Trading Mechanics:</strong> Entirely driven by supply and demand</li>
+      <li><strong>Fixed Supply:</strong> No additional minting</li>
+      <li><strong>Future Liquidity Transfer:</strong> Transition to Raydium for better accessibility and liquidity</li>
+    </ul>
+
+    <h2>Roadmap <span class="tag">04</span></h2>
+    <div class="roadmap-grid">
+      <div class="quarter">
+        <h3>Q4 2025 — Launch and Basic Stages</h3>
+        <ul>
+          <li>Token already launched on Pump.fun</li>
+          <li>Liquidity ensured: 100% of tokens added to the Pump.fun liquidity pool</li>
+          <li>Marketing campaign and community building</li>
+        </ul>
+      </div>
+      <div class="quarter">
+        <h3>Q1 2026 — Expansion and Exchange Listing</h3>
+        <ul>
+          <li>Listing on Raydium</li>
+          <li>Community growth: contests, giveaways, and events</li>
+        </ul>
+      </div>
+      <div class="quarter">
+        <h3>Q2 2026 — Partnerships and Exchange Listing</h3>
+        <ul>
+          <li>Establishing strategic partnerships</li>
+          <li>Listing on major DEXs</li>
+        </ul>
+      </div>
+      <div class="quarter">
+        <h3>Q3 2026 — Sustainable Growth</h3>
+        <ul>
+          <li>Community-driven improvements</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Conclusion <span class="tag">05</span></h2>
+    <p>CryptoStalker (CSR) is a community-driven token with a fair launch, strong liquidity foundation, and a transparent development plan. By leveraging the power of the Solana blockchain and strategic ecosystem growth, CSR aims to become a key player in the decentralized economy.</p>
+
+    <a href="index.html" class="btn-back">‹ Back</a>
+  </div>
 </body>
 </html>
-
-
-
-
