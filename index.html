@@ -299,7 +299,9 @@
       font-size: 0.78em;
       letter-spacing: 0.08em;
       color: var(--accent);
-      animation: ticker-scroll 32s linear infinite;
+      animation-name: ticker-scroll;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
       padding-left: 100%;
     }
     .ticker-track span { margin-right: 48px; opacity: 0.9; }
@@ -909,6 +911,17 @@
 
       var MARKETS_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h';
       var REFRESH_MS = 90000;
+
+      // fixed scroll speed in pixels/second — the animation-duration is
+      // recalculated from the actual rendered width every time render()
+      // runs, so the ticker always moves at the same visible speed
+      // whether it holds the short "loading…" placeholder or the full
+      // gainers/losers list. This is what fixes the "slow at first,
+      // then speeds up" bug: previously the duration was a fixed 32s
+      // regardless of content width, so a short string crawled and a
+      // long string sprinted.
+      var PIXELS_PER_SECOND = 55;
+
       var movers = null; // { gainers: [...], losers: [...] }
 
       function lang() {
@@ -969,6 +982,15 @@
           });
         }
         trackEl.innerHTML = html;
+
+        // recompute duration from the actual width of one copy of the
+        // content so speed (px/s) stays constant regardless of how much
+        // text is in the track right now
+        var halfWidth = trackEl.scrollWidth / 2;
+        if (halfWidth > 0) {
+          var duration = halfWidth / PIXELS_PER_SECOND;
+          trackEl.style.animationDuration = duration + 's';
+        }
       }
 
       function load() {
