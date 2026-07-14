@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-en="CryptoStalker (CSR) Official Website | Solana Token" data-ru="CryptoStalker (CSR) — Официальный сайт | Токен на Solana">CryptoStalker (CSR) Official Website | Solana Token</title>
+
+  <!-- SEO -->
+  <meta name="description" content="CryptoStalker (CSR) is a fair-launch, community-driven token on Solana sharing crypto market trends and trading signals. Join the hunt.">
+  <meta name="keywords" content="CryptoStalker, CSR token, Solana token, buy CSR token, Solana community token, crypto trading signals">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="CryptoStalker Team">
+  <meta name="copyright" content="© 2025 CryptoStalker. All rights reserved.">
+  <link rel="canonical" href="https://cstlkr.github.io/CSR/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CryptoStalker — Cryptocurrency on Solana">
+  <meta property="og:description" content="CryptoStalker — fair-launched token with transparency and community focus.">
+  <meta property="og:image" content="https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png">
+  <meta property="og:url" content="https://cstlkr.github.io/CSR/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CryptoStalker">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CryptoStalker — Token on Solana">
+  <meta name="twitter:description" content="Fair launch, transparency, and community-driven development.">
+  <meta name="twitter:image" content="https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Language switcher -->
+  <script src="i18n.js" defer></script>
+
+  <!-- Styles -->
+  <style>
+    :root {
+      --bg: #070a08;
+      --panel: rgba(9, 20, 15, 0.72);
+      --panel-solid: #0d1712;
+      --fg: #dff5e6;
+      --fg-dim: #8fada0;
+      --accent: #2ee6a6;
+      --accent-soft: rgba(46, 230, 166, 0.35);
+      --alert: #ff5470;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: var(--bg); }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: var(--sans);
+      text-align: center;
+      color: var(--fg);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* the photo lives on its own fixed layer instead of body's background —
+       background-attachment:fixed is unreliable on mobile (address-bar resize
+       leaves black bars), a dedicated fixed element is not. */
+    .bg-photo {
+      position: fixed;
+      inset: -26px;
+      z-index: -1;
+      background: url('https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png')
+                  no-repeat;
+      background-size: cover;
+      background-position: calc(50% + var(--px, 0px)) calc(50% + var(--py, 0px));
+      pointer-events: none;
+    }
+
+    /* darken + tint the photo so the HUD reads on top of it */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at center 60%, rgba(0,0,0,0.05) 0%, rgba(3,8,6,0.42) 75%, rgba(2,5,4,0.6) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* CRT scanline texture, drifting slowly */
+    .crt-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.035) 0px,
+        rgba(255,255,255,0.035) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      mix-blend-mode: overlay;
+      animation: scan-drift 9s linear infinite;
+    }
+
+    @keyframes scan-drift {
+      0%   { background-position: 0 0; }
+      100% { background-position: 0 40px; }
+    }
+
+    /* HUD corner brackets */
+    .hud-corner {
+      position: fixed;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--accent-soft);
+      z-index: 6;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+    .hud-corner.tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+    .hud-corner.tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+    .hud-corner.bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+    .hud-corner.br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
+
+    /* radar blip, top-left */
+    .radar {
+      position: fixed;
+      top: 26px;
+      left: 26px;
+      width: 12px;
+      height: 12px;
+      z-index: 6;
+      pointer-events: none;
+    }
+    .radar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px 2px var(--accent-soft);
+    }
+    .radar::after {
+      content: "";
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-soft);
+      animation: radar-ping 2.4s ease-out infinite;
+    }
+    @keyframes radar-ping {
+      0%   { transform: scale(0.3); opacity: 0.9; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    /* signal-net canvas sits between the photo (z 0) and the HUD/content (z 2+) */
+    #signal-net {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .top-button {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 7;
+      padding: 12px 26px;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.2em;
+      letter-spacing: 0.04em;
+      color: var(--fg);
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: 0.25s;
+      text-shadow: 0 0 12px var(--accent-soft);
+    }
+
+    .top-button:hover {
+      background: var(--accent);
+      color: #05130d;
+      border-color: var(--accent);
+      text-shadow: none;
+      transform: translateX(-50%) translateY(-1px);
+      box-shadow: 0 0 22px var(--accent-soft);
+    }
+
+    /* language switcher */
+    .lang-switch {
+      position: fixed;
+      top: 64px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: var(--mono);
+    }
+    .lang-switch .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--fg-dim);
+      padding: 6px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      transition: 0.2s;
+    }
+    .lang-switch .lang-btn + .lang-btn { border-left: 1px solid var(--accent-soft); }
+    .lang-switch .lang-btn:hover { color: var(--fg); background: rgba(46,230,166,0.08); }
+    .lang-switch .lang-btn.active { background: var(--accent); color: #05130d; font-weight: 700; }
+
+    @media (max-width: 768px) {
+      .lang-switch { top: 58px; right: 10px; }
+      .lang-switch .lang-btn { padding: 5px 8px; font-size: 0.68em; }
+    }
+
+    /* one-shot glitch flicker on load */
+    .top-button[data-text]::before,
+    .top-button[data-text]::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      padding: 12px 26px;
+      background: transparent;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .top-button[data-text]::before {
+      color: var(--alert);
+      clip-path: inset(0 0 60% 0);
+      animation: glitch-1 1.1s ease-out 1;
+    }
+    .top-button[data-text]::after {
+      color: #4ef0ff;
+      clip-path: inset(60% 0 0 0);
+      animation: glitch-2 1.1s ease-out 1;
+    }
+    @keyframes glitch-1 {
+      0%   { transform: translate(0,0); opacity: 1; }
+      10%  { transform: translate(-3px,-1px); }
+      20%  { transform: translate(3px,1px); }
+      30%  { transform: translate(-2px,0); }
+      40%  { transform: translate(0,0); opacity: 0.6; }
+      100% { transform: translate(0,0); opacity: 0; }
+    }
+    @keyframes glitch-2 {
+      0%   { transform: translate(0,0); opacity: 1; }
+      10%  { transform: translate(3px,1px); }
+      20%  { transform: translate(-3px,-1px); }
+      30%  { transform: translate(2px,0); }
+      40%  { transform: translate(0,0); opacity: 0.6; }
+      100% { transform: translate(0,0); opacity: 0; }
+    }
+
+    /* scrolling signal ticker */
+    .ticker {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 640px;
+      margin: 14px auto 0;
+      overflow: hidden;
+      border-top: 1px solid var(--accent-soft);
+      border-bottom: 1px solid var(--accent-soft);
+      background: rgba(6, 15, 11, 0.78);
+      padding: 6px 0;
+    }
+    .ticker-track {
+      display: inline-flex;
+      white-space: nowrap;
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 0.78em;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      animation: ticker-scroll 32s linear infinite;
+      padding-left: 100%;
+    }
+    .ticker-track span { margin-right: 48px; opacity: 0.9; }
+    .ticker-track span::before { content: "// "; color: var(--fg-dim); }
+    .ticker-track .tick-up { color: var(--accent); }
+    .ticker-track .tick-down { color: var(--alert); }
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .buttons {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    /* contract address readout */
+    .ca-box {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 600px;
+      margin: 14px auto 0;
+      padding: 10px 16px;
+      background: rgba(5, 12, 9, 0.6);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      animation: ca-pulse 3s ease-in-out infinite;
+    }
+    @keyframes ca-pulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(46,230,166,0); }
+      50% { box-shadow: 0 0 16px rgba(46,230,166,0.28); }
+    }
+    .ca-label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.68em;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+      margin-bottom: 6px;
+    }
+    .ca-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ca-value {
+      flex: 1;
+      min-width: 0;
+      font-family: var(--mono);
+      font-size: 0.8em;
+      color: var(--accent);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: left;
+    }
+    .ca-copy {
+      flex-shrink: 0;
+      font-family: var(--mono);
+      font-size: 0.75em;
+      letter-spacing: 0.05em;
+      color: var(--fg);
+      background: rgba(46, 230, 166, 0.1);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .ca-copy:hover {
+      background: var(--accent);
+      color: #05130d;
+      border-color: var(--accent);
+    }
+    .ca-copy.copied {
+      background: var(--accent);
+      color: #05130d;
+      border-color: var(--accent);
+    }
+
+    .btn {
+      position: relative;
+      padding: 14px 12px;
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 1.05em;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      background: var(--panel);
+      backdrop-filter: blur(2px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 4px;
+      text-decoration: none;
+      text-align: center;
+      transition: 0.25s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      animation: wander-glow 14.4s ease-in-out infinite;
+    }
+
+    /* a soft glow that roams from button to button, one step at a time */
+    @keyframes wander-glow {
+      0%, 89%, 100% {
+        box-shadow: none;
+        border-color: var(--accent-soft);
+      }
+      94% {
+        box-shadow: 0 0 22px rgba(46, 230, 166, 0.5);
+        border-color: var(--accent);
+      }
+    }
+
+    .buttons .btn:nth-child(1) { animation-delay: 0s; }
+    .buttons .btn:nth-child(2) { animation-delay: 1.6s; }
+    .buttons .btn:nth-child(3) { animation-delay: 3.2s; }
+    .buttons .btn:nth-child(4) { animation-delay: 4.8s; }
+    .buttons .btn:nth-child(5) { animation-delay: 6.4s; }
+    .buttons .btn:nth-child(6) { animation-delay: 8s; }
+    .buttons .btn:nth-child(7) { animation-delay: 9.6s; }
+    .buttons .btn:nth-child(8) { animation-delay: 11.2s; }
+    .buttons .btn:nth-child(9) { animation-delay: 12.8s; }
+
+    /* scan sweep on hover */
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(46,230,166,0.35), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+    }
+    .btn:hover::after { left: 130%; }
+
+    .btn:hover {
+      background: rgba(46, 230, 166, 0.12);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 18px rgba(46,230,166,0.18);
+    }
+
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    body { animation: fadeIn 1s ease-in-out; }
+
+    @media (max-width: 768px) {
+      .buttons { grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 16px; }
+      .btn { font-size: 0.95em; padding: 13px 10px; }
+      .hud-corner { width: 22px; height: 22px; }
+
+      .btn-wide {
+        grid-column: 1 / -1;
+        order: -1;
+        background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), rgba(245, 197, 66, 0.18);
+        border: 2px solid #f5c542;
+        color: #f5c542;
+        font-weight: 800;
+        font-size: 1.15em;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 17px 12px;
+        border-radius: 6px;
+        animation: buy-glow 1.8s ease-in-out infinite;
+      }
+      .btn-wide:hover {
+        background: #f5c542;
+        color: #211705;
+        animation: none;
+        box-shadow: 0 0 26px rgba(245, 197, 66, 0.55);
+      }
+      @keyframes buy-glow {
+        0%, 100% {
+          box-shadow: 0 0 8px rgba(245, 197, 66, 0.25);
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 0 24px rgba(245, 197, 66, 0.55);
+          transform: scale(1.015);
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      body { justify-content: flex-end; padding-top: 68px; padding-bottom: 20px; }
+      .top-button { font-size: 0.85em; padding: 9px 18px; white-space: nowrap; }
+      .ticker { max-width: 92%; margin-top: 10px; }
+      .buttons { grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 14px 12px; }
+      .btn { font-size: 0.82em; padding: 11px 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .crt-overlay, .radar::after, .ticker-track, body,
+      .top-button[data-text]::before, .top-button[data-text]::after,
+      .ca-box, .btn-wide, .btn {
+        animation: none !important;
+      }
+      .btn::after { transition: none; }
+      #signal-net { display: none; }
+    }
+
+    /* stack that holds the crypto price widget + fear &amp; greed widget —
+       fixed bottom-right on desktop (see mobile override below).
+       DOM order = visual order, so whichever widget comes second in the
+       markup renders under the one before it, on both desktop and mobile. */
+    .widgets-stack {
+      position: fixed;
+      bottom: 20px;
+      right: 16px;
+      z-index: 8;
+      width: 270px;
+      max-width: calc(100vw - 28px);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    /* top-5 crypto price widget + fear &amp; greed widget share this box style */
+    .crypto-widget {
+      padding: 10px 14px 4px;
+      background: var(--panel);
+      backdrop-filter: blur(3px);
+      border: 1px solid var(--accent-soft);
+      border-radius: 6px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.4);
+    }
+    .crypto-widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--mono);
+      font-size: 0.66em;
+      letter-spacing: 0.1em;
+      color: var(--fg-dim);
+      margin-bottom: 4px;
+    }
+    .crypto-widget-updated { opacity: 0.75; letter-spacing: 0.04em; }
+    .crypto-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-family: var(--sans);
+      font-size: 0.82em;
+      text-align: left;
+    }
+    .crypto-row:last-child { border-bottom: none; }
+    .crypto-rank {
+      color: var(--fg-dim);
+      font-family: var(--mono);
+      font-size: 0.85em;
+      width: 12px;
+      flex-shrink: 0;
+    }
+    .crypto-icon { width: 15px; height: 15px; border-radius: 50%; flex-shrink: 0; }
+    .crypto-name {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--fg);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .crypto-fullname { margin-right: 4px; white-space: nowrap; }
+    .crypto-symbol { color: var(--fg-dim); font-family: var(--mono); font-size: 0.85em; }
+    .crypto-price {
+      font-family: var(--mono);
+      font-weight: 600;
+      color: var(--fg);
+      flex-shrink: 0;
+      text-align: right;
+      min-width: 70px;
+      font-size: 0.95em;
+    }
+    .crypto-change {
+      font-family: var(--mono);
+      font-size: 0.8em;
+      flex-shrink: 0;
+      min-width: 50px;
+      text-align: right;
+    }
+    .crypto-change.up { color: var(--accent); }
+    .crypto-change.down { color: var(--alert); }
+    .crypto-loading, .crypto-error {
+      font-family: var(--mono);
+      font-size: 0.74em;
+      color: var(--fg-dim);
+      text-align: center;
+      padding: 8px 0;
+      letter-spacing: 0.03em;
+    }
+
+    /* fear & greed gauge widget */
+    .fng-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2px 0 8px;
+    }
+    .fng-gauge { width: 78%; max-width: 190px; height: auto; }
+    .fng-needle { transition: transform 0.6s ease; transform-origin: 100px 100px; }
+    .fng-value {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.6em;
+      line-height: 1;
+      margin-top: -6px;
+    }
+    .fng-classification {
+      font-family: var(--mono);
+      font-size: 0.72em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    @media (max-width: 768px) {
+      .widgets-stack {
+        top: 88px;
+        right: 10px;
+        bottom: auto;
+        left: auto;
+        width: 138px;
+      }
+      .crypto-widget { padding: 5px 7px 2px; border-radius: 4px; }
+      .crypto-widget-header { font-size: 0.58em; margin-bottom: 2px; }
+      .crypto-widget-updated { display: none; }
+      .crypto-row { font-size: 0.64em; gap: 4px; padding: 4px 0; }
+      .crypto-rank { display: none; }
+      .crypto-icon { width: 12px; height: 12px; }
+      .crypto-fullname { display: none; }
+      .crypto-symbol { font-size: 0.95em; }
+      .crypto-price { min-width: 44px; font-size: 0.9em; }
+      .crypto-change { min-width: 32px; font-size: 0.66em; }
+      .fng-gauge { max-width: 108px; }
+      .fng-value { font-size: 1.15em; margin-top: -3px; }
+      .fng-classification { font-size: 0.6em; }
+    }
+
+    /* visually hidden but readable by search engines and screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+  <!-- Structured data: helps Google understand the site and can surface
+       the logo / social links directly in search results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "CryptoStalker",
+    "alternateName": "CSR",
+    "url": "https://cstlkr.github.io/CSR/",
+    "logo": "https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png",
+    "description": "CryptoStalker (CSR) is a fair-launch, community-driven token on Solana sharing crypto market trends and trading signals.",
+    "sameAs": [
+      "https://x.com/CSRcoinOfficial",
+      "https://t.me/CRYPTOSTLKR",
+      "https://www.tiktok.com/@cryptostalker_csr",
+      "https://www.instagram.com/cryptostalker_csr/",
+      "https://dex.coinmarketcap.com/token/solana/FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump/"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div class="bg-photo"></div>
+  <canvas id="signal-net"></canvas>
+  <div class="crt-overlay"></div>
+  <div class="hud-corner tl"></div>
+  <div class="hud-corner tr"></div>
+  <div class="hud-corner bl"></div>
+  <div class="hud-corner br"></div>
+  <div class="radar"></div>
+
+  <div class="lang-switch" role="group" aria-label="Language / Язык">
+    <button type="button" class="lang-btn" data-lang="en" onclick="CSR_setLang('en')">EN</button>
+    <button type="button" class="lang-btn" data-lang="ru" onclick="CSR_setLang('ru')">RU</button>
+  </div>
+
+  <h1 class="visually-hidden" data-en="CryptoStalker (CSR) — Community-Driven Token on Solana" data-ru="CryptoStalker (CSR) — токен на Solana, управляемый сообществом">CryptoStalker (CSR) — Community-Driven Token on Solana</h1>
+
+  <a href="about.html" class="top-button" data-text="CryptoStalker CSR">CryptoStalker CSR</a>
+
+  <div class="ticker">
+    <div class="ticker-track" id="ticker-track" aria-hidden="true">
+      <span data-en="NODE: SOLANA MAINNET" data-ru="УЗЕЛ: SOLANA MAINNET">NODE: SOLANA MAINNET</span>
+      <span data-en="STATUS: FAIR LAUNCH" data-ru="СТАТУС: ЧЕСТНЫЙ ЗАПУСК">STATUS: FAIR LAUNCH</span>
+      <span data-en="TRACKING: COMMUNITY ACTIVITY" data-ru="ОТСЛЕЖИВАНИЕ: АКТИВНОСТЬ СООБЩЕСТВА">TRACKING: COMMUNITY ACTIVITY</span>
+      <span data-en="SIGNAL: CHAIN SYNCED" data-ru="СИГНАЛ: СЕТЬ СИНХРОНИЗИРОВАНА">SIGNAL: CHAIN SYNCED</span>
+      <span data-en="NODE: SOLANA MAINNET" data-ru="УЗЕЛ: SOLANA MAINNET">NODE: SOLANA MAINNET</span>
+      <span data-en="STATUS: FAIR LAUNCH" data-ru="СТАТУС: ЧЕСТНЫЙ ЗАПУСК">STATUS: FAIR LAUNCH</span>
+      <span data-en="TRACKING: COMMUNITY ACTIVITY" data-ru="ОТСЛЕЖИВАНИЕ: АКТИВНОСТЬ СООБЩЕСТВА">TRACKING: COMMUNITY ACTIVITY</span>
+      <span data-en="SIGNAL: CHAIN SYNCED" data-ru="СИГНАЛ: СЕТЬ СИНХРОНИЗИРОВАНА">SIGNAL: CHAIN SYNCED</span>
+    </div>
+  </div>
+
+  <div class="widgets-stack">
+    <div class="crypto-widget" id="crypto-widget">
+      <div class="crypto-widget-header">
+        <span data-en="TOP 5 CRYPTO" data-ru="ТОП 5 КРИПТОВАЛЮТ">TOP 5 CRYPTO</span>
+        <span class="crypto-widget-updated" id="crypto-updated"></span>
+      </div>
+      <div class="crypto-widget-list" id="crypto-list">
+        <div class="crypto-loading" data-en="Loading market data…" data-ru="Загрузка рыночных данных…">Loading market data…</div>
+      </div>
+    </div>
+
+    <div class="crypto-widget" id="fng-widget">
+      <div class="crypto-widget-header">
+        <span data-en="FEAR &amp; GREED" data-ru="СТРАХ И ЖАДНОСТЬ">FEAR &amp; GREED</span>
+        <span class="crypto-widget-updated" id="fng-updated"></span>
+      </div>
+      <div class="fng-body" id="fng-body">
+        <div class="crypto-loading" data-en="Loading index…" data-ru="Загрузка индекса…">Loading index…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ca-box">
+    <span class="ca-label" data-en="CONTRACT ADDRESS" data-ru="АДРЕС КОНТРАКТА">CONTRACT ADDRESS</span>
+    <div class="ca-row">
+      <span class="ca-value" id="ca-value">FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump</span>
+      <button class="ca-copy" id="ca-copy" onclick="copyCA()" data-en="Copy" data-ru="Копировать">Copy</button>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <a href="tokenomics.html" class="btn" data-en="Tokenomics" data-ru="Токеномика">Tokenomics</a>
+    <a href="https://pump.fun/coin/FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump" class="btn btn-wide" target="_blank" data-en="Buy Token" data-ru="Купить токен">Buy Token</a>
+    <a href="whitepaper.html" class="btn" target="_blank">Whitepaper</a>
+    <a href="roadmap.html" class="btn" target="_blank" data-en="Roadmap" data-ru="Дорожная карта">Roadmap</a>
+    <a href="https://x.com/CSRcoinOfficial" class="btn" target="_blank">Twitter</a>
+    <a href="https://t.me/CRYPTOSTLKR" class="btn" target="_blank">Telegram</a>
+    <a href="https://www.tiktok.com/@cryptostalker_csr" class="btn" target="_blank">TikTok</a>
+    <a href="https://dex.coinmarketcap.com/token/solana/FsuKNhg6HibqmZD7fxzqvrUU5MPPw3qBkGNx3rXVpump/" class="btn" target="_blank">CoinMarketCap</a>
+    <a href="https://www.instagram.com/cryptostalker_csr/" class="btn" target="_blank">Instagram</a>
+  </div>
+
+  <script>
+    function copyCA() {
+      const text = document.getElementById('ca-value').textContent;
+      const btn = document.getElementById('ca-copy');
+      const lang = (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      const copiedText = lang === 'ru' ? 'Скопировано ✓' : 'Copied ✓';
+      const defaultText = lang === 'ru' ? 'Копировать' : 'Copy';
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = copiedText;
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = defaultText;
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    }
+
+    // ---- signal-net background particles ----
+    (function () {
+      const canvas = document.getElementById('signal-net');
+      const ctx = canvas.getContext('2d');
+      let w, h, particles;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const COUNT = window.innerWidth < 600 ? 28 : 55;
+      particles = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = 'rgba(46,230,166,0.7)';
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > w) p.vx *= -1;
+          if (p.y < 0 || p.y > h) p.vy *= -1;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i], b = particles[j];
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < 110) {
+              ctx.strokeStyle = `rgba(46,230,166,${0.12 * (1 - d / 110)})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
+    })();
+
+    // ---- background parallax (mouse on desktop, tilt on mobile) ----
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const MAX_OFFSET = window.matchMedia('(max-width: 480px)').matches ? 20 : 8; // px of drift in any direction
+      let targetX = 0, targetY = 0, curX = 0, curY = 0;
+      const root = document.documentElement;
+
+      function apply() {
+        curX += (targetX - curX) * 0.06;
+        curY += (targetY - curY) * 0.06;
+        root.style.setProperty('--px', curX.toFixed(2) + 'px');
+        root.style.setProperty('--py', curY.toFixed(2) + 'px');
+        requestAnimationFrame(apply);
+      }
+      requestAnimationFrame(apply);
+
+      // desktop: mouse position
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;   // -1..1
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;  // -1..1
+        targetX = -nx * MAX_OFFSET;
+        targetY = -ny * MAX_OFFSET;
+      });
+
+      // mobile: device tilt (calibrated against the angle the phone is
+      // actually held at, since most people don't hold it flat at 45°)
+      let baseBeta = null, baseGamma = null;
+      function handleOrientation(e) {
+        if (e.beta === null || e.gamma === null) return;
+        if (baseBeta === null) { baseBeta = e.beta; baseGamma = e.gamma; }
+        const nx = Math.max(-1, Math.min(1, (e.gamma - baseGamma) / 20));
+        const ny = Math.max(-1, Math.min(1, (e.beta - baseBeta) / 20));
+        targetX = -nx * MAX_OFFSET;
+        targetY = -ny * MAX_OFFSET;
+      }
+
+      function enableGyro() {
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(state => {
+              if (state === 'granted') window.addEventListener('deviceorientation', handleOrientation);
+            })
+            .catch(() => {});
+        } else {
+          window.addEventListener('deviceorientation', handleOrientation);
+        }
+      }
+      // iOS requires a user gesture to grant motion permission
+      document.body.addEventListener('touchstart', enableGyro, { once: true });
+    })();
+
+    // ---- ticker: status lines + top 3 gainers / top 3 losers (CoinGecko public API, no key required) ----
+    (function () {
+      var trackEl = document.getElementById('ticker-track');
+      if (!trackEl) return;
+
+      // stablecoins, wrapped/staked assets, and BTC itself are filtered out
+      // so the movers list only shows genuine altcoin volatility
+      var EXCLUDE_IDS = [
+        'bitcoin',
+        'tether', 'usd-coin', 'dai', 'binance-usd', 'true-usd', 'usdd', 'frax',
+        'gemini-dollar', 'paxos-standard', 'first-digital-usd', 'ethena-usde',
+        'paypal-usd', 'usds', 'tether-gold', 'pax-gold',
+        'wrapped-bitcoin', 'weth', 'staked-ether', 'wrapped-steth',
+        'wrapped-eeth', 'coinbase-wrapped-btc', 'rocket-pool-eth', 'wrapped-solana'
+      ];
+
+      var MARKETS_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h';
+      var REFRESH_MS = 90000;
+      var movers = null; // { gainers: [...], losers: [...] }
+
+      function lang() {
+        return (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      }
+
+      function fmtPrice(p) {
+        var decimals = p >= 1 ? 2 : (p >= 0.01 ? 4 : 6);
+        return '$' + p.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      }
+
+      function fmtChange(c) {
+        return (c >= 0 ? '+' : '') + c.toFixed(2) + '%';
+      }
+
+      var loadFailed = false;
+
+      function buildItems() {
+        if (movers) {
+          var items = [];
+          var gainLabel = lang() === 'ru' ? 'РОСТ' : 'GAINER';
+          var loseLabel = lang() === 'ru' ? 'ПАДЕНИЕ' : 'LOSER';
+          var maxLen = Math.max(movers.gainers.length, movers.losers.length);
+
+          for (var i = 0; i < maxLen; i++) {
+            var g = movers.gainers[i];
+            var l = movers.losers[i];
+            if (g) {
+              items.push({
+                text: gainLabel + ': ' + g.symbol.toUpperCase() + ' ' + fmtPrice(g.current_price) + ' ' + fmtChange(g.price_change_percentage_24h),
+                cls: 'tick-up'
+              });
+            }
+            if (l) {
+              items.push({
+                text: loseLabel + ': ' + l.symbol.toUpperCase() + ' ' + fmtPrice(l.current_price) + ' ' + fmtChange(l.price_change_percentage_24h),
+                cls: 'tick-down'
+              });
+            }
+          }
+          return items;
+        }
+
+        if (loadFailed) {
+          return [{ text: lang() === 'ru' ? 'РЫНОЧНЫЕ ДАННЫЕ НЕДОСТУПНЫ' : 'MARKET DATA UNAVAILABLE', cls: '' }];
+        }
+
+        return [{ text: lang() === 'ru' ? 'ЗАГРУЗКА РЫНОЧНЫХ ДАННЫХ…' : 'LOADING MARKET DATA…', cls: '' }];
+      }
+
+      function render() {
+        var items = buildItems();
+        var html = '';
+        // the whole sequence is duplicated so the CSS scroll (translateX -50%) loops seamlessly
+        for (var rep = 0; rep < 2; rep++) {
+          items.forEach(function (it) {
+            html += '<span' + (it.cls ? ' class="' + it.cls + '"' : '') + '>' + it.text + '</span>';
+          });
+        }
+        trackEl.innerHTML = html;
+      }
+
+      function load() {
+        fetch(MARKETS_URL)
+          .then(function (res) {
+            if (!res.ok) throw new Error('bad response');
+            return res.json();
+          })
+          .then(function (data) {
+            var pool = data.filter(function (c) {
+              return EXCLUDE_IDS.indexOf(c.id) === -1 && typeof c.price_change_percentage_24h === 'number';
+            });
+            var byChange = pool.slice().sort(function (a, b) {
+              return b.price_change_percentage_24h - a.price_change_percentage_24h;
+            });
+            movers = {
+              gainers: byChange.slice(0, 10),
+              losers: byChange.slice(-10).reverse()
+            };
+            loadFailed = false;
+            render();
+          })
+          .catch(function () {
+            loadFailed = true;
+            if (!movers) render();
+          });
+      }
+
+      document.addEventListener('csr:langchange', render);
+
+      render(); // paint the loading state immediately, movers replace it once fetched
+      load();
+      setInterval(load, REFRESH_MS);
+    })();
+
+    // ---- top-5 crypto price widget (CoinGecko public API, no key required) ----
+    (function () {
+      var listEl = document.getElementById('crypto-list');
+      var updatedEl = document.getElementById('crypto-updated');
+      var COIN_IDS = ['bitcoin', 'ethereum', 'solana', 'binancecoin', 'ripple'];
+      var API_URL = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=' + COIN_IDS.join(',') + '&sparkline=false&price_change_percentage=24h';
+      var REFRESH_MS = 60000;
+
+      function lang() {
+        return (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      }
+
+      function fmtPrice(p) {
+        var decimals = p >= 1 ? 2 : (p >= 0.01 ? 4 : 6);
+        return '$' + p.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+      }
+
+      function render(coins) {
+        listEl.innerHTML = '';
+        coins.forEach(function (c, i) {
+          var change = c.price_change_percentage_24h;
+          var hasChange = typeof change === 'number' && !isNaN(change);
+          var changeClass = hasChange ? (change >= 0 ? 'up' : 'down') : '';
+          var changeText = hasChange ? (change >= 0 ? '+' : '') + change.toFixed(2) + '%' : '—';
+
+          var row = document.createElement('div');
+          row.className = 'crypto-row';
+
+          var rank = document.createElement('span');
+          rank.className = 'crypto-rank';
+          rank.textContent = i + 1;
+
+          var icon = document.createElement('img');
+          icon.className = 'crypto-icon';
+          icon.src = c.image;
+          icon.alt = '';
+          icon.loading = 'lazy';
+
+          var name = document.createElement('span');
+          name.className = 'crypto-name';
+          var fullname = document.createElement('span');
+          fullname.className = 'crypto-fullname';
+          fullname.textContent = c.name;
+          var symbol = document.createElement('span');
+          symbol.className = 'crypto-symbol';
+          symbol.textContent = c.symbol ? c.symbol.toUpperCase() : '';
+          name.appendChild(icon);
+          name.appendChild(fullname);
+          name.appendChild(symbol);
+
+          var price = document.createElement('span');
+          price.className = 'crypto-price';
+          price.textContent = fmtPrice(c.current_price);
+
+          var changeEl = document.createElement('span');
+          changeEl.className = 'crypto-change ' + changeClass;
+          changeEl.textContent = changeText;
+
+          row.appendChild(rank);
+          row.appendChild(name);
+          row.appendChild(price);
+          row.appendChild(changeEl);
+          listEl.appendChild(row);
+        });
+      }
+
+      function showError() {
+        listEl.innerHTML = '<div class="crypto-error"></div>';
+        var el = listEl.querySelector('.crypto-error');
+        el.textContent = lang() === 'ru'
+          ? 'Не удалось загрузить рыночные данные. Попробуем ещё раз через минуту.'
+          : 'Could not load market data. Retrying in a minute.';
+      }
+
+      function updateTimestamp() {
+        var now = new Date();
+        var time = now.toLocaleTimeString(lang() === 'ru' ? 'ru-RU' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        updatedEl.textContent = (lang() === 'ru' ? 'Обновлено ' : 'Updated ') + time;
+      }
+
+      var lastCoins = null;
+
+      function load() {
+        fetch(API_URL)
+          .then(function (res) {
+            if (!res.ok) throw new Error('bad response');
+            return res.json();
+          })
+          .then(function (data) {
+            data.sort(function (a, b) {
+              return COIN_IDS.indexOf(a.id) - COIN_IDS.indexOf(b.id);
+            });
+            lastCoins = data;
+            render(data);
+            updateTimestamp();
+          })
+          .catch(showError);
+      }
+
+      // re-render immediately on language switch (updates the "Updated HH:MM" label,
+      // and re-shows a translated error message if the last fetch had failed)
+      document.addEventListener('csr:langchange', function () {
+        if (lastCoins) {
+          updateTimestamp();
+        } else {
+          showError();
+        }
+      });
+
+      load();
+      setInterval(load, REFRESH_MS);
+    })();
+
+    // ---- fear & greed index widget (alternative.me public API, no key required) ----
+    (function () {
+      var bodyEl = document.getElementById('fng-body');
+      var updatedEl = document.getElementById('fng-updated');
+      var API_URL = 'https://api.alternative.me/fng/?limit=1&format=json';
+      var REFRESH_MS = 300000; // the source itself only updates a few times a day
+
+      var LABELS = {
+        'Extreme Fear':  { en: 'Extreme Fear',  ru: 'Крайний страх',   color: '#ff5470' },
+        'Fear':          { en: 'Fear',          ru: 'Страх',           color: '#ff8a3d' },
+        'Neutral':       { en: 'Neutral',       ru: 'Нейтрально',      color: '#f5d76e' },
+        'Greed':         { en: 'Greed',         ru: 'Жадность',        color: '#8fe388' },
+        'Extreme Greed': { en: 'Extreme Greed', ru: 'Крайняя жадность',color: '#2ee6a6' }
+      };
+
+      function lang() {
+        return (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      }
+
+      function gaugeSVG() {
+        return '' +
+          '<svg class="fng-gauge" viewBox="0 0 200 112" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M20,100 A80,80 0 0 1 35.28,52.98" fill="none" stroke="#ff5470" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M35.28,52.98 A80,80 0 0 1 75.28,23.92" fill="none" stroke="#ff8a3d" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M75.28,23.92 A80,80 0 0 1 124.72,23.92" fill="none" stroke="#f5d76e" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M124.72,23.92 A80,80 0 0 1 164.72,52.98" fill="none" stroke="#8fe388" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M164.72,52.98 A80,80 0 0 1 180,100" fill="none" stroke="#2ee6a6" stroke-width="16" stroke-linecap="round"/>' +
+            '<g class="fng-needle" id="fng-needle">' +
+              '<polygon points="100,24 93,44 107,44" fill="var(--fg)"/>' +
+              '<line x1="100" y1="44" x2="100" y2="94" stroke="var(--fg)" stroke-width="3" stroke-linecap="round"/>' +
+            '</g>' +
+            '<circle cx="100" cy="100" r="6" fill="var(--fg)"/>' +
+          '</svg>';
+      }
+
+      function render(value, classification) {
+        var info = LABELS[classification] || LABELS['Neutral'];
+        bodyEl.innerHTML = gaugeSVG() +
+          '<div class="fng-value" style="color:' + info.color + '">' + value + '</div>' +
+          '<div class="fng-classification" style="color:' + info.color + '" id="fng-classification"></div>';
+        document.getElementById('fng-classification').textContent = lang() === 'ru' ? info.ru : info.en;
+        var needle = document.getElementById('fng-needle');
+        var angle = -90 + (Math.max(0, Math.min(100, value)) / 100) * 180;
+        needle.setAttribute('transform', 'rotate(' + angle + ' 100 100)');
+      }
+
+      function showError() {
+        bodyEl.innerHTML = '<div class="crypto-error"></div>';
+        var el = bodyEl.querySelector('.crypto-error');
+        el.textContent = lang() === 'ru'
+          ? 'Не удалось загрузить индекс. Попробуем ещё раз через минуту.'
+          : 'Could not load the index. Retrying shortly.';
+      }
+
+      function updateTimestamp() {
+        var now = new Date();
+        var time = now.toLocaleTimeString(lang() === 'ru' ? 'ru-RU' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        updatedEl.textContent = (lang() === 'ru' ? 'Обновлено ' : 'Updated ') + time;
+      }
+
+      var lastReading = null;
+
+      function load() {
+        fetch(API_URL)
+          .then(function (res) {
+            if (!res.ok) throw new Error('bad response');
+            return res.json();
+          })
+          .then(function (data) {
+            var point = data && data.data && data.data[0];
+            if (!point) throw new Error('no data');
+            lastReading = point;
+            render(parseInt(point.value, 10), point.value_classification);
+            updateTimestamp();
+          })
+          .catch(showError);
+      }
+
+      document.addEventListener('csr:langchange', function () {
+        if (lastReading) {
+          render(parseInt(lastReading.value, 10), lastReading.value_classification);
+          updateTimestamp();
+        } else {
+          showError();
+        }
+      });
+
+      load();
+      setInterval(load, REFRESH_MS);
+    })();
+  </script>
+</body>
+</html>
