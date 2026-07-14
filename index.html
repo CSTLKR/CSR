@@ -513,14 +513,25 @@
       #signal-net { display: none; }
     }
 
-    /* top-5 crypto price widget — fixed bottom-right floating card */
-    .crypto-widget {
+    /* stack that holds the crypto price widget + fear &amp; greed widget —
+       fixed bottom-right on desktop (see mobile override below).
+       DOM order = visual order, so whichever widget comes second in the
+       markup renders under the one before it, on both desktop and mobile. */
+    .widgets-stack {
       position: fixed;
       bottom: 20px;
       right: 16px;
       z-index: 8;
       width: 270px;
       max-width: calc(100vw - 28px);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    /* top-5 crypto price widget + fear &amp; greed widget share this box style */
+    .crypto-widget {
       padding: 10px 14px 4px;
       background: var(--panel);
       backdrop-filter: blur(3px);
@@ -598,16 +609,39 @@
       letter-spacing: 0.03em;
     }
 
+    /* fear & greed gauge widget */
+    .fng-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2px 0 8px;
+    }
+    .fng-gauge { width: 78%; max-width: 190px; height: auto; }
+    .fng-needle { transition: transform 0.6s ease; transform-origin: 100px 100px; }
+    .fng-value {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: 1.6em;
+      line-height: 1;
+      margin-top: -6px;
+    }
+    .fng-classification {
+      font-family: var(--mono);
+      font-size: 0.72em;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
     @media (max-width: 768px) {
-      .crypto-widget {
+      .widgets-stack {
         top: 88px;
         right: 10px;
         bottom: auto;
         left: auto;
         width: 138px;
-        padding: 5px 7px 2px;
-        border-radius: 4px;
       }
+      .crypto-widget { padding: 5px 7px 2px; border-radius: 4px; }
       .crypto-widget-header { font-size: 0.58em; margin-bottom: 2px; }
       .crypto-widget-updated { display: none; }
       .crypto-row { font-size: 0.64em; gap: 4px; padding: 4px 0; }
@@ -617,6 +651,9 @@
       .crypto-symbol { font-size: 0.95em; }
       .crypto-price { min-width: 44px; font-size: 0.9em; }
       .crypto-change { min-width: 32px; font-size: 0.66em; }
+      .fng-gauge { max-width: 108px; }
+      .fng-value { font-size: 1.15em; margin-top: -3px; }
+      .fng-classification { font-size: 0.6em; }
     }
 
     /* visually hidden but readable by search engines and screen readers */
@@ -686,13 +723,25 @@
     </div>
   </div>
 
-  <div class="crypto-widget" id="crypto-widget">
-    <div class="crypto-widget-header">
-      <span data-en="TOP 5 CRYPTO" data-ru="ТОП 5 КРИПТОВАЛЮТ">TOP 5 CRYPTO</span>
-      <span class="crypto-widget-updated" id="crypto-updated"></span>
+  <div class="widgets-stack">
+    <div class="crypto-widget" id="crypto-widget">
+      <div class="crypto-widget-header">
+        <span data-en="TOP 5 CRYPTO" data-ru="ТОП 5 КРИПТОВАЛЮТ">TOP 5 CRYPTO</span>
+        <span class="crypto-widget-updated" id="crypto-updated"></span>
+      </div>
+      <div class="crypto-widget-list" id="crypto-list">
+        <div class="crypto-loading" data-en="Loading market data…" data-ru="Загрузка рыночных данных…">Loading market data…</div>
+      </div>
     </div>
-    <div class="crypto-widget-list" id="crypto-list">
-      <div class="crypto-loading" data-en="Loading market data…" data-ru="Загрузка рыночных данных…">Loading market data…</div>
+
+    <div class="crypto-widget" id="fng-widget">
+      <div class="crypto-widget-header">
+        <span data-en="FEAR &amp; GREED" data-ru="СТРАХ И ЖАДНОСТЬ">FEAR &amp; GREED</span>
+        <span class="crypto-widget-updated" id="fng-updated"></span>
+      </div>
+      <div class="fng-body" id="fng-body">
+        <div class="crypto-loading" data-en="Loading index…" data-ru="Загрузка индекса…">Loading index…</div>
+      </div>
     </div>
   </div>
 
@@ -942,6 +991,97 @@
       // and re-shows a translated error message if the last fetch had failed)
       document.addEventListener('csr:langchange', function () {
         if (lastCoins) {
+          updateTimestamp();
+        } else {
+          showError();
+        }
+      });
+
+      load();
+      setInterval(load, REFRESH_MS);
+    })();
+
+    // ---- fear & greed index widget (alternative.me public API, no key required) ----
+    (function () {
+      var bodyEl = document.getElementById('fng-body');
+      var updatedEl = document.getElementById('fng-updated');
+      var API_URL = 'https://api.alternative.me/fng/?limit=1&format=json';
+      var REFRESH_MS = 300000; // the source itself only updates a few times a day
+
+      var LABELS = {
+        'Extreme Fear':  { en: 'Extreme Fear',  ru: 'Крайний страх',   color: '#ff5470' },
+        'Fear':          { en: 'Fear',          ru: 'Страх',           color: '#ff8a3d' },
+        'Neutral':       { en: 'Neutral',       ru: 'Нейтрально',      color: '#f5d76e' },
+        'Greed':         { en: 'Greed',         ru: 'Жадность',        color: '#8fe388' },
+        'Extreme Greed': { en: 'Extreme Greed', ru: 'Крайняя жадность',color: '#2ee6a6' }
+      };
+
+      function lang() {
+        return (window.CSR_getLang && window.CSR_getLang()) || 'en';
+      }
+
+      function gaugeSVG() {
+        return '' +
+          '<svg class="fng-gauge" viewBox="0 0 200 112" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M20,100 A80,80 0 0 1 35.28,52.98" fill="none" stroke="#ff5470" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M35.28,52.98 A80,80 0 0 1 75.28,23.92" fill="none" stroke="#ff8a3d" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M75.28,23.92 A80,80 0 0 1 124.72,23.92" fill="none" stroke="#f5d76e" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M124.72,23.92 A80,80 0 0 1 164.72,52.98" fill="none" stroke="#8fe388" stroke-width="16" stroke-linecap="round"/>' +
+            '<path d="M164.72,52.98 A80,80 0 0 1 180,100" fill="none" stroke="#2ee6a6" stroke-width="16" stroke-linecap="round"/>' +
+            '<g class="fng-needle" id="fng-needle">' +
+              '<polygon points="100,24 93,44 107,44" fill="var(--fg)"/>' +
+              '<line x1="100" y1="44" x2="100" y2="94" stroke="var(--fg)" stroke-width="3" stroke-linecap="round"/>' +
+            '</g>' +
+            '<circle cx="100" cy="100" r="6" fill="var(--fg)"/>' +
+          '</svg>';
+      }
+
+      function render(value, classification) {
+        var info = LABELS[classification] || LABELS['Neutral'];
+        bodyEl.innerHTML = gaugeSVG() +
+          '<div class="fng-value" style="color:' + info.color + '">' + value + '</div>' +
+          '<div class="fng-classification" style="color:' + info.color + '" id="fng-classification"></div>';
+        document.getElementById('fng-classification').textContent = lang() === 'ru' ? info.ru : info.en;
+        var needle = document.getElementById('fng-needle');
+        var angle = -90 + (Math.max(0, Math.min(100, value)) / 100) * 180;
+        needle.setAttribute('transform', 'rotate(' + angle + ' 100 100)');
+      }
+
+      function showError() {
+        bodyEl.innerHTML = '<div class="crypto-error"></div>';
+        var el = bodyEl.querySelector('.crypto-error');
+        el.textContent = lang() === 'ru'
+          ? 'Не удалось загрузить индекс. Попробуем ещё раз через минуту.'
+          : 'Could not load the index. Retrying shortly.';
+      }
+
+      function updateTimestamp() {
+        var now = new Date();
+        var time = now.toLocaleTimeString(lang() === 'ru' ? 'ru-RU' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        updatedEl.textContent = (lang() === 'ru' ? 'Обновлено ' : 'Updated ') + time;
+      }
+
+      var lastReading = null;
+
+      function load() {
+        fetch(API_URL)
+          .then(function (res) {
+            if (!res.ok) throw new Error('bad response');
+            return res.json();
+          })
+          .then(function (data) {
+            var point = data && data.data && data.data[0];
+            if (!point) throw new Error('no data');
+            lastReading = point;
+            render(parseInt(point.value, 10), point.value_classification);
+            updateTimestamp();
+          })
+          .catch(showError);
+      }
+
+      document.addEventListener('csr:langchange', function () {
+        if (lastReading) {
+          render(parseInt(lastReading.value, 10), lastReading.value_classification);
           updateTimestamp();
         } else {
           showError();
