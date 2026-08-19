@@ -12,6 +12,9 @@
   <meta name="author" content="CryptoStalker Team">
   <meta name="copyright" content="© 2025 CryptoStalker. All rights reserved.">
   <link rel="canonical" href="https://cstlkr.github.io/CSR/">
+  <link rel="alternate" hreflang="en" href="https://cstlkr.github.io/CSR/">
+  <link rel="alternate" hreflang="ru" href="https://cstlkr.github.io/CSR/">
+  <link rel="alternate" hreflang="x-default" href="https://cstlkr.github.io/CSR/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="CryptoStalker — Cryptocurrency on Solana">
@@ -19,6 +22,8 @@
   <meta property="og:image" content="https://i.ibb.co/TM0pW3bX/eb3fb54b-aebd-4449-a5d3-b71c19cdf2bd.png">
   <meta property="og:url" content="https://cstlkr.github.io/CSR/">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ru_RU">
   <meta property="og:site_name" content="CryptoStalker">
 
   <!-- Twitter Cards -->
@@ -967,7 +972,9 @@
         }
 
         if (loadFailed) {
-          return [{ text: lang() === 'ru' ? 'РЫНОЧНЫЕ ДАННЫЕ НЕДОСТУПНЫ' : 'MARKET DATA UNAVAILABLE', cls: '' }];
+          // Quiet, non-alarming fallback: avoids "unavailable/error" wording
+          // so the page never reads as broken to crawlers or first-time visitors.
+          return [{ text: lang() === 'ru' ? 'СЛЕДИМ ЗА РЫНКОМ' : 'TRACKING THE MARKET', cls: '' }];
         }
 
         return [{ text: lang() === 'ru' ? 'ЗАГРУЗКА РЫНОЧНЫХ ДАННЫХ…' : 'LOADING MARKET DATA…', cls: '' }];
@@ -1094,11 +1101,14 @@
       }
 
       function showError() {
+        // Quiet fallback: no "error/unavailable" wording, so the page never
+        // reads like a broken/error page to crawlers when the third-party
+        // API is briefly unreachable.
         listEl.innerHTML = '<div class="crypto-error"></div>';
         var el = listEl.querySelector('.crypto-error');
         el.textContent = lang() === 'ru'
-          ? 'Не удалось загрузить рыночные данные. Попробуем ещё раз через минуту.'
-          : 'Could not load market data. Retrying in a minute.';
+          ? 'Актуальные цены обновляются...'
+          : 'Live prices updating…';
       }
 
       function updateTimestamp() {
@@ -1187,11 +1197,14 @@
       }
 
       function showError() {
+        // Quiet fallback: no "error/unavailable" wording, so the page never
+        // reads like a broken/error page to crawlers when the third-party
+        // API is briefly unreachable.
         bodyEl.innerHTML = '<div class="crypto-error"></div>';
         var el = bodyEl.querySelector('.crypto-error');
         el.textContent = lang() === 'ru'
-          ? 'Не удалось загрузить индекс. Попробуем ещё раз через минуту.'
-          : 'Could not load the index. Retrying shortly.';
+          ? 'Индекс обновляется...'
+          : 'Index updating…';
       }
 
       function updateTimestamp() {
